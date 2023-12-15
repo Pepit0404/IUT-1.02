@@ -26,11 +26,24 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux){
     size+=1;
     return size;
 }
-/*
+
+Maillon * Lire1Devis(FILE *flot)
+{
+    Maillon *d;
+    d=(Maillon *)malloc(5*sizeof(Maillon));
+    fgets((d->devis).entreprise,31, flot);
+    fgets((d->devis).adresse,51, flot);
+    fscanf(flot,"%d",&(d->devis).capital);
+    fscanf(flot,"%d",&(d->devis).duree); 
+    fscanf(flot,"%d",&(d->devis).cout);
+    return d;
+}
+
+
 Maillon newMaillon{
 
 }
-*/
+
 
 void test(void){
     FILE *flot;
@@ -46,29 +59,12 @@ void test(void){
 
     tOffre=(Offre **)malloc(5*sizeof(Offre *));
     strcpy(travaux, "Test");
-    tOffre=ajoutOffre(tOffre, travaux);
+    tOffre=newOffre(tOffre, travaux);
     lireTravaux(flot);
 }
 
-Offre ** lireTravaux(FILE *flot)
+
+void afficher(Offre o, int nb)
 {
-    Offre **o, **aux;
-    int i, nb=5, tmax=5;
-    o=(Offre **)malloc(5*sizeof(Offre *));
-    while(!feof(flot))
-    { 
-        if(nb==tmax)
-        {
-            tmax=tmax+5;
-            aux=(Offre **)realloc(o,tmax*sizeof(Offre *));
-            if(aux==NULL)
-            {
-                printf("Erreur dans l'allocation de aux pour les offres !\n");
-                exit(1);
-            }
-            o=aux;
-        }
-        fscanf(flot,"%s",o[i]);
-        i++;
-    }
+
 }
