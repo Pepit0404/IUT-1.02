@@ -13,7 +13,7 @@ typedef struct {
 typedef struct maillon {
     Devis devis;
     struct maillon *suiv;
-} Maillon;
+} Maillon, *Liste;
 
 typedef struct {
     char travaux[30];

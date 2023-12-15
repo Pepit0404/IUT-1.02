@@ -1,6 +1,34 @@
 #include "offre.h"
 
 /*
+###################################################
+    Partie File
+###################################################
+*/
+
+Liste enfile(Liste l, Devis devis){
+    Maillon *new;
+    Liste start=l;
+    new=(Maillon *)malloc(sizeof(Maillon));
+    if (new==NULL){
+        printf("Erreur: creation maillon (enfile)\n");
+        exit(1);
+    }
+    new->devis=devis;
+    if (l==NULL){
+        new->suiv=NULL;
+        l=new;
+        return l;
+    }
+    while (strcmp(devis.entreprise, ((l->suiv)->devis.entreprise))>0){
+        l=l->suiv;
+    }
+    new->suiv=l->suiv;
+    l->suiv=new;
+    return start;
+}
+
+/*
 Fonction qui ajoute un devis dans le tableau quand le travail n'est pas encore présent dans le tableau
 */
 int newOffre(Offre *tab[], int size, int *tMax, char *travaux){
@@ -27,11 +55,10 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux){
     return size;
 }
 /*
-Maillon newMaillon{
+Maillon newMaillon(Offre *tab[], int size, File *file){
 
 }
 */
-
 void test(void){
     Offre **tOffre;
     int tMax=5, size=0;
