@@ -3,7 +3,6 @@
 #include <string.h>
 
 typedef struct {
-    char tache[30];
     char entreprise[30];
     char adresse[50];
     int capital;
