@@ -62,6 +62,9 @@ Maillon newMaillon(Offre *tab[], int size, File *file){
 */
 =======
 
+/*
+Lit dans le fichier devis.txt un seul devis
+*/
 Maillon * Lire1Devis(FILE *flot)
 {
     Maillon *d;
@@ -75,18 +78,25 @@ Maillon * Lire1Devis(FILE *flot)
 }
 
 
-Maillon newMaillon{
+Maillon newMaillon(){
 
 }
+
+void afficher1Devis(Devis d)
+{
+    printf("Entreprise : %s\tAdresse : %s\nCapital : %d\tDuree : %d\tCout : %d\n", d.entreprise, d.adresse, d.capital, d.duree, d.cout);
+}
+
+void afficherTravaux()
 
 
 >>>>>>> 2d5d1159b4b126826f88d30a14edc53bb7dca42e
 void test(void){
     FILE *flot;
-    flot=fopen("précedences.txt","r");
+    flot=fopen("devis.txt","r");
     if(flot==NULL)
     {
-        printf("Erreur dans l'ouverture de : précedences.txt !\n");
+        printf("Erreur dans l'ouverture de : devis.txt !\n");
         exit(1);
     }
     Offre **tOffre;
@@ -95,12 +105,9 @@ void test(void){
 
     tOffre=(Offre **)malloc(5*sizeof(Offre *));
     strcpy(travaux, "Test");
-    tOffre=newOffre(tOffre, travaux);
-    lireTravaux(flot);
+    taille=newOffre(tOffre, taille, &tMax, travaux);
+    Devis d;
+    d=Lire1Devis(flot);
 }
 
 
-void afficher(Offre o, int nb)
-{
-
-}
