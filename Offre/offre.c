@@ -54,60 +54,45 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux){
     size+=1;
     return size;
 }
-<<<<<<< HEAD
-/*
-Maillon newMaillon(Offre *tab[], int size, File *file){
 
+int addDevis(Offre *of[], int size, int *max, char *travaux, Devis devis){
+    for (int i=0; i<size; i++){
+        if (strcmp(of[i]->travaux, travaux)==0){
+            of[i]->ldevis=enfile(of[i]->ldevis, devis);
+            return size;
+        }
+    }
+    size=newOffre(of, size, max, travaux);
+    of[size-1]->ldevis=enfile(of[size-1]->ldevis, devis);
+    return size;
 }
-*/
-=======
 
-/*
-Lit dans le fichier devis.txt un seul devis
-*/
-Maillon * Lire1Devis(FILE *flot)
+Devis Lire1Devis(FILE *flot)
 {
-    Maillon *d;
-    d=(Maillon *)malloc(5*sizeof(Maillon));
-    fgets((d->devis).entreprise,31, flot);
-    fgets((d->devis).adresse,51, flot);
-    fscanf(flot,"%d",&(d->devis).capital);
-    fscanf(flot,"%d",&(d->devis).duree); 
-    fscanf(flot,"%d",&(d->devis).cout);
+    Devis d;
+    fgets(d.entreprise,31, flot);
+    fgets(d.adresse,51, flot);
+    fscanf(flot,"%d",&d.capital);
+    fscanf(flot,"%d",&d.duree); 
+    fscanf(flot,"%d",&d.cout);
     return d;
 }
 
-
-Maillon newMaillon(){
-
-}
-
-void afficher1Devis(Devis d)
-{
-    printf("Entreprise : %s\tAdresse : %s\nCapital : %d\tDuree : %d\tCout : %d\n", d.entreprise, d.adresse, d.capital, d.duree, d.cout);
-}
-
-void afficherTravaux()
-
-
->>>>>>> 2d5d1159b4b126826f88d30a14edc53bb7dca42e
-void test(void){
-    FILE *flot;
-    flot=fopen("devis.txt","r");
-    if(flot==NULL)
-    {
-        printf("Erreur dans l'ouverture de : devis.txt !\n");
+int readOffre(Offre *of[], int size, int *max){
+    FILE *file;
+    Devis devis;
+    char travaux[30];
+    file = fopen("devis.txt", "r");
+    if (file==NULL){
+        printf("Erreur: ouverture de 'devis.txt'\n");
         exit(1);
     }
-    Offre **tOffre;
-    int tMax=5, taille=0;
-    char travaux[10];
-
-    tOffre=(Offre **)malloc(5*sizeof(Offre *));
-    strcpy(travaux, "Test");
-    taille=newOffre(tOffre, taille, &tMax, travaux);
-    Devis d;
-    d=Lire1Devis(flot);
+    fscanf(file, "%s", travaux);
+    while (feof(file)==0){
+        devis=Lire1Devis(file);
+        size=addDevis(of, size, max, travaux, devis);
+        fscanf(file, "%s", travaux);
+    }
+    fclose(file);
+    return size;
 }
-
-
