@@ -55,9 +55,18 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux){
     return size;
 }
 
-/*
-Lit dans le fichier devis.txt un seul devis
-*/
+int addDevis(Offre *of[], int size, int *max, char *travaux, Devis devis){
+    for (int i=0; i<size; i++){
+        if (strcmp(of[i]->travaux, travaux)==0){
+            of[i]->ldevis=enfile(of[i]->ldevis, devis);
+            return size;
+        }
+    }
+    size=newOffre(of, size, max, travaux);
+    of[size-1]->ldevis=enfile(of[size-1]->ldevis, devis);
+    return size;
+}
+
 Devis Lire1Devis(FILE *flot)
 {
     Devis d;
@@ -71,11 +80,6 @@ Devis Lire1Devis(FILE *flot)
     return d;
 }
 
-/*
-Maillon newMaillon(){
-
-}
-*/
 void afficher1Devis(Devis d)
 {
     printf("Entreprise : %s\tAdresse : %s\nCapital : %d\tDuree : %d\tCout : %d\n", d.entreprise, d.adresse, d.capital, d.duree, d.cout);
@@ -88,3 +92,21 @@ void afficherTravaux()
 
 
 
+int readOffre(Offre *of[], int size, int *max){
+    FILE *file;
+    Devis devis;
+    char travaux[30];
+    file = fopen("devis.txt", "r");
+    if (file==NULL){
+        printf("Erreur: ouverture de 'devis.txt'\n");
+        exit(1);
+    }
+    fscanf(file, "%s", travaux);
+    while (feof(file)==0){
+        devis=Lire1Devis(file);
+        size=addDevis(of, size, max, travaux, devis);
+        fscanf(file, "%s", travaux);
+    }
+    fclose(file);
+    return size;
+}
