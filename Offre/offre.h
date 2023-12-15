@@ -19,3 +19,5 @@ typedef struct {
     char travaux[30];
     Maillon *ldevis;
 } Offre;
+
+void test(void);
