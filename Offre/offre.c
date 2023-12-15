@@ -6,12 +6,13 @@
 ###################################################
 */
 
-Liste enfile(Liste l, Devis devis){
+//priver
+Liste enliste(Liste l, Devis devis){
     Maillon *new;
     Liste start=l;
     new=(Maillon *)malloc(sizeof(Maillon));
     if (new==NULL){
-        printf("Erreur: creation maillon (enfile)\n");
+        printf("Erreur: creation maillon (enliste)\n");
         exit(1);
     }
     new->devis=devis;
@@ -27,6 +28,37 @@ Liste enfile(Liste l, Devis devis){
     l->suiv=new;
     return start;
 }
+
+/*
+Liste delTete(Liste l){
+    Maillon *old;
+    if (l==NULL){
+        printf("Erreur: impossible de delister une liste vide");
+        return l;
+    }
+    old=l;
+    l=l->suiv;
+    free(old);
+    return l;
+}
+
+Liste deliste(Liste l, char *entreprise){
+    Liste start=l;
+    if (l==NULL){
+        printf("Erreur: impossible de delister une liste vide\n");
+        return l;
+    }
+    if (strcmp((start->devis).entreprise, entreprise)==0)
+        return delTete(l);
+    while (strcmp(((l->suiv)->devis).entreprise, entreprise)==0){
+        if (l->suiv==NULL){
+            printf("Erreur: entreprise non présente dans les donnée\n");
+            return start;
+        }
+        l=l->suiv;
+    }
+}
+*/
 
 /*
 Fonction qui ajoute un devis dans le tableau quand le travail n'est pas encore présent dans le tableau
@@ -55,15 +87,15 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux){
     return size;
 }
 
-int addDevis(Offre *of[], int size, int *max, char *travaux, Devis devis){
+int  addDevis(Offre *of[], int size, int *max, char *travaux, Devis devis){
     for (int i=0; i<size; i++){
         if (strcmp(of[i]->travaux, travaux)==0){
-            of[i]->ldevis=enfile(of[i]->ldevis, devis);
+            of[i]->ldevis=enliste(of[i]->ldevis, devis);
             return size;
         }
     }
     size=newOffre(of, size, max, travaux);
-    of[size-1]->ldevis=enfile(of[size-1]->ldevis, devis);
+    of[size-1]->ldevis=enliste(of[size-1]->ldevis, devis);
     return size;
 }
 
