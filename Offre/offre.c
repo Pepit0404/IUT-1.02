@@ -5,6 +5,12 @@
     Partie File
 ###################################################
 */
+int longListe(Liste l)
+{
+    if(l->suiv==NULL)
+        return 1;
+    return longListe(l)+1;
+}
 
 Liste enliste(Liste l, Devis devis){
     Maillon *new;
@@ -15,27 +21,27 @@ Liste enliste(Liste l, Devis devis){
         exit(1);
     }
     new->devis=devis;
+      
     if (l==NULL){
         new->suiv=NULL;
         l=new;
-        afficher1Devis(l->devis);
         return l;
     }
-    afficher1Devis(l->devis);   
-    while (strcmp(devis.entreprise, ((l->suiv)->devis.entreprise))>0){
+    printf("\n1\n");
+    printf("%s\n",devis.entreprise);
+    printf("%s\n",((l->devis).entreprise));
+    while(strcmp(devis.entreprise, ((l->devis).entreprise))>0){
+        if(l->suiv==NULL){
+            break;
+        }
         l=l->suiv;
     }
-    new->suiv=l->suiv;
-    l->suiv=new;
+    new->suiv=l;
+    l=new;  
     return start;
 }
 
-int longListe(Liste l)
-{
-    if(l->suiv==NULL)
-        return 1;
-    return longListe(l)+1;
-}
+
 
 /*
 Fonction qui ajoute un devis dans le tableau quand le travail n'est pas encore présent dans le tableau
@@ -66,10 +72,9 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux){
 
 // UTILISER LA FONCTION RECHERCHE TRAVAUX 
 int addDevis(Offre *of[], int size, int *max, char *travaux, Devis devis){
-    afficher1Devis(devis);
     for (int i=0; i<size; i++){
         if (strcmp(of[i]->travaux, travaux)==0){
-            of[i]->ldevis=enliste(of[i]->ldevis, devis);  
+            of[i]->ldevis=enliste(of[i]->ldevis, devis); 
             return size;
         }
     }
@@ -148,7 +153,6 @@ int readOffre(Offre *of[], int size, int *max){
     fscanf(file, "%s%*c", travaux);
     while (feof(file)==0){
         devis=Lire1Devis(file);
-        afficher1Devis(devis);
         size=addDevis(of, size, max, travaux, devis);
         fscanf(file, "%s%*c", travaux);
     }
