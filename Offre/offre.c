@@ -5,6 +5,12 @@
     Partie File
 ###################################################
 */
+int longListe(Liste l)
+{
+    if(l->suiv==NULL)
+        return 1;
+    return longListe(l)+1;
+}
 
 //priver
 Liste enliste(Liste l, Devis devis){
@@ -16,25 +22,27 @@ Liste enliste(Liste l, Devis devis){
         exit(1);
     }
     new->devis=devis;
+      
     if (l==NULL){
         new->suiv=NULL;
         l=new;
         return l;
     }
-    while (strcmp(devis.entreprise, ((l->suiv)->devis.entreprise))>0){
+    printf("\n1\n");
+    printf("%s\n",devis.entreprise);
+    printf("%s\n",((l->devis).entreprise));
+    while(strcmp(devis.entreprise, ((l->devis).entreprise))>0){
+        if(l->suiv==NULL){
+            break;
+        }
         l=l->suiv;
     }
-    new->suiv=l->suiv;
-    l->suiv=new;
+    new->suiv=l;
+    l=new;  
     return start;
 }
 
-int longListe(Liste l)
-{
-    if(l->suiv==NULL)
-        return 1;
-    return longListe(l)+1;
-}
+
 
 /*
 Liste delTete(Liste l){
@@ -98,7 +106,7 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux){
 int addDevis(Offre *of[], int size, int *max, char *travaux, Devis devis){
     for (int i=0; i<size; i++){
         if (strcmp(of[i]->travaux, travaux)==0){
-            of[i]->ldevis=enliste(of[i]->ldevis, devis);
+            of[i]->ldevis=enliste(of[i]->ldevis, devis); 
             return size;
         }
     }
@@ -116,7 +124,7 @@ Devis Lire1Devis(FILE *flot)
     d.adresse[strlen(d.adresse)-1]='\0';
     fscanf(flot,"%d",&d.capital);
     fscanf(flot,"%d",&d.duree); 
-    fscanf(flot,"%d",&d.cout);
+    fscanf(flot,"%d%*c",&d.cout);
     return d;
 }
 
@@ -125,7 +133,7 @@ void afficher1Devis(Devis d)
     printf("Entreprise : %s\tAdresse : %s\nCapital : %d\tDuree : %d\tCout : %d\n", d.entreprise, d.adresse, d.capital, d.duree, d.cout);
 }
 
-void afficherTravaux(Offre **o, char travaux[], int nb)
+void afficher1Travaux(Offre **o, char travaux[], int nb)
 {
     int pos, trouve, longueur;
     pos=rechercheTravaux(o, travaux, nb, &trouve);
@@ -134,15 +142,22 @@ void afficherTravaux(Offre **o, char travaux[], int nb)
         printf("Ce type de travail n'existe pas !\n");
         return;
     }
-    longueur=longListe((o[pos]->ldevis)->suiv);
-    while((o[pos]->ldevis)!=NULL)
-    { 
+    longueur=longListe((o[pos]->ldevis));
+    printf("\n%s :\n", travaux);
+    for(int a=0; a<longueur; a++)
         afficher1Devis((o[pos]->ldevis)->devis);
-        o[pos]->ldevis=o[pos]->ldevis->suiv;
-    }
 }
 
-int rechercheTravaux(Offre **o, char travaux[], int nb,int *trouve)
+void afficherTout(Offre **o, int nb)
+{
+    int i;
+    for(i=0; i<=nb; i++)
+        afficher1Travaux(o, o[i]->travaux, nb);
+}
+
+
+
+int rechercheTravaux(Offre **o, char travaux[], int nb, int *trouve)
 {
     int i;
     for(i=0; i<nb; i++)
@@ -158,8 +173,6 @@ int rechercheTravaux(Offre **o, char travaux[], int nb,int *trouve)
 }
 
 
-
-
 int readOffre(Offre *of[], int size, int *max){
     FILE *file;
     Devis devis;
@@ -169,11 +182,11 @@ int readOffre(Offre *of[], int size, int *max){
         printf("Erreur: ouverture de 'devis.txt'\n");
         exit(1);
     }
-    fscanf(file, "%s", travaux);
+    fscanf(file, "%s%*c", travaux);
     while (feof(file)==0){
         devis=Lire1Devis(file);
         size=addDevis(of, size, max, travaux, devis);
-        fscanf(file, "%s", travaux);
+        fscanf(file, "%s%*c", travaux);
     }
     fclose(file);
     return size;
