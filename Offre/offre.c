@@ -13,7 +13,7 @@ int longListe(Liste l)
 }
 
 //priver
-Liste enliste(Liste l, Devis devis){
+Liste insererEnTete(Liste l, Devis devis){
     Maillon *new;
     new=(Maillon *)malloc(sizeof(Maillon));
     if (new==NULL){
@@ -21,23 +21,20 @@ Liste enliste(Liste l, Devis devis){
         exit(1);
     }
     new->devis=devis;
-    if(l==NULL)
-    {
-        new->suiv=NULL;
-        l=new;
-        return l;
-    }
-    if(strcmp(devis.entreprise , ((l->devis).entreprise))<0)
-    {
-        new->suiv=l;
-        l=new;
-        return l;
-    }
-    l->suiv=enliste(l->suiv, devis);
+    new->suiv=l;
+    l=new;
     return l;
 }
 
-
+Liste enliste(Liste l, Devis devis)
+{
+    if(l==NULL)
+        return insererEnTete(l, devis);
+    if(strcmp(devis.entreprise , ((l->devis).entreprise))<0)
+        return insererEnTete(l, devis);
+    l->suiv=enliste(l->suiv, devis);
+    return l;
+}
 
 /*
 Liste delTete(Liste l){
@@ -131,17 +128,22 @@ void afficher1Devis(Devis d)
 void afficher1Travaux(Offre **o, char travaux[], int nb)
 {
     int pos, trouve, longueur;
+    Liste l;
     pos=rechercheTravaux(o, travaux, nb, &trouve);
+    l=o[pos]->ldevis;
     if(trouve==0)
     {
         printf("Ce type de travail n'existe pas !\n");
         return;
     }
-    longueur=longListe((o[pos]->ldevis));
+    longueur=longListe(l);
     printf("%d",longueur);
     printf("\n%s :\n", travaux);
-    for(int a=0; a<longueur; a++)
-        afficher1Devis((o[pos]->ldevis)->devis);
+    for(int a=0; a<longueur; a++){
+        afficher1Devis(l->devis);
+        l=l->suiv;
+    }
+
 }
 
 void afficherTout(Offre **o, int nb)

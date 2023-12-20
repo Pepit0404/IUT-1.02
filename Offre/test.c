@@ -14,5 +14,7 @@ int main(void){
     if(o==NULL){printf("PB de malloc pour offre !\n");exit(1);}
     size=readOffre(o, size, &max);
     afficherTout(o, size);
+    afficherTout(o, size);
+    afficher1Travaux(o, "Plomberie", size);
     return 0;
 }
