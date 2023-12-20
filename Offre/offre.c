@@ -29,6 +29,13 @@ Liste enliste(Liste l, Devis devis){
     return start;
 }
 
+int longListe(Liste l)
+{
+    if(l->suiv==NULL)
+        return 1;
+    return longListe(l)+1;
+}
+
 /*
 Liste delTete(Liste l){
     Maillon *old;
@@ -87,7 +94,8 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux){
     return size;
 }
 
-int  addDevis(Offre *of[], int size, int *max, char *travaux, Devis devis){
+// UTILISER LA FONCTION RECHERCHE TRAVAUX 
+int addDevis(Offre *of[], int size, int *max, char *travaux, Devis devis){
     for (int i=0; i<size; i++){
         if (strcmp(of[i]->travaux, travaux)==0){
             of[i]->ldevis=enliste(of[i]->ldevis, devis);
@@ -103,12 +111,54 @@ Devis Lire1Devis(FILE *flot)
 {
     Devis d;
     fgets(d.entreprise,31, flot);
+    d.entreprise[strlen(d.entreprise)-1]='\0';
     fgets(d.adresse,51, flot);
+    d.adresse[strlen(d.adresse)-1]='\0';
     fscanf(flot,"%d",&d.capital);
     fscanf(flot,"%d",&d.duree); 
     fscanf(flot,"%d",&d.cout);
     return d;
 }
+
+void afficher1Devis(Devis d)
+{
+    printf("Entreprise : %s\tAdresse : %s\nCapital : %d\tDuree : %d\tCout : %d\n", d.entreprise, d.adresse, d.capital, d.duree, d.cout);
+}
+
+void afficherTravaux(Offre **o, char travaux[], int nb)
+{
+    int pos, trouve, longueur;
+    pos=rechercheTravaux(o, travaux, nb, &trouve);
+    if(trouve==0)
+    {
+        printf("Ce type de travail n'existe pas !\n");
+        return;
+    }
+    longueur=longListe((o[pos]->ldevis)->suiv);
+    while((o[pos]->ldevis)!=NULL)
+    { 
+        afficher1Devis((o[pos]->ldevis)->devis);
+        o[pos]->ldevis=o[pos]->ldevis->suiv;
+    }
+}
+
+int rechercheTravaux(Offre **o, char travaux[], int nb,int *trouve)
+{
+    int i;
+    for(i=0; i<nb; i++)
+    {
+        if(strcmp(travaux, o[i]->travaux)==0)
+        {
+            *trouve=1;
+            return i;
+        }
+    }
+    *trouve=0;
+    return i;
+}
+
+
+
 
 int readOffre(Offre *of[], int size, int *max){
     FILE *file;

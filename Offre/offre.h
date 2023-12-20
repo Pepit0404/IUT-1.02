@@ -20,7 +20,7 @@ typedef struct {
     Maillon *ldevis;
 } Offre;
 
+Liste enfile(Liste l, Devis devis);
 int newOffre(Offre *tab[], int size, int *tMax, char *travaux);
-int addDevis(Offre *of[], int size, int *max, char *travaux, Devis devis);
 Devis Lire1Devis(FILE *flot);
-int readOffre(Offre *of[], int size, int *max);
+void afficher1Devis(Devis d);
