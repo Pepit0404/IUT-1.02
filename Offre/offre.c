@@ -203,3 +203,7 @@ int readOffre(Offre *of[], int size, int *max){
     fclose(file);
     return size;
 }
+
+void affiche(){
+    printf("Coucou je suis la\n");
+}

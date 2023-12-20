@@ -1,3 +1,9 @@
+exe: offre.o main.o
+	gcc -Wall offre.o main.o -o exe
+
+main.o: main.c
+	gcc -Wall -c main.c
+
 testOffre: test.o offre.o
 	gcc -Wall test.o offre.o -o test
 
@@ -8,4 +14,4 @@ test.o: Offre/test.c Offre/offre.h
 	gcc -Wall -c Offre/test.c
 
 clean:
-	rm *o test exe
+	rm *o test exe test
