@@ -7,13 +7,12 @@
 */
 int longListe(Liste l)
 {
-    printf("\n1\n");
     if(l==NULL)
         return 0;
     return longListe(l->suiv)+1;
 }
 
-Liste enliste(Liste l, Devis devis)
+Liste insererEnTete(Liste l, Devis devis)
 {
     Maillon *new;
     new=(Maillon *)malloc(sizeof(Maillon));
@@ -22,23 +21,20 @@ Liste enliste(Liste l, Devis devis)
         exit(1);
     }
     new->devis=devis;
-    if(l==NULL)
-    {
-        new->suiv=NULL;
-        l=new;
-        return l;
-    }
-    if(strcmp(devis.entreprise , ((l->devis).entreprise))<0)
-    {
-        new->suiv=l;
-        l=new;
-        return l;
-    }
-    l->suiv=enliste(l->suiv, devis);
+    new->suiv=l;
+    l=new;
     return l;
 }
 
-
+Liste enliste(Liste l, Devis devis)
+{
+    if(l==NULL)
+        return insererEnTete(l, devis);
+    if(strcmp(devis.entreprise , ((l->devis).entreprise))<0)
+        return insererEnTete(l, devis);
+    l->suiv=enliste(l->suiv, devis);
+    return l;
+}
 
 /*
 Fonction qui ajoute un devis dans le tableau quand le travail n'est pas encore présent dans le tableau
@@ -109,8 +105,11 @@ void afficher1Travaux(Offre **o, char travaux[], int nb)
     }
     longueur=longListe((o[pos]->ldevis));
     printf("\n%s :\n", travaux);
-    for(int a=0; a<longueur; a++)
+    for(int a=0; a<longueur; a++){
         afficher1Devis((o[pos]->ldevis)->devis);
+        (o[pos]->ldevis)=(o[pos]->ldevis)->suiv;
+    }
+
 }
 
 void afficherTout(Offre **o, int nb)
@@ -152,7 +151,6 @@ int readOffre(Offre *of[], int size, int *max){
         devis=Lire1Devis(file);
         size=addDevis(of, size, max, travaux, devis);
         fscanf(file, "%s%*c", travaux);
-        afficher1Travaux(of, "Plomberie", size);
     }
     fclose(file);
     return size;
