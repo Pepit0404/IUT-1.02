@@ -7,39 +7,34 @@
 */
 int longListe(Liste l)
 {
-    if(l->suiv==NULL)
-        return 1;
-    return longListe(l)+1;
+    if(l==NULL)
+        return 0;
+    return longListe(l->suiv)+1;
 }
 
 //priver
 Liste enliste(Liste l, Devis devis){
     Maillon *new;
-    Liste start=l;
     new=(Maillon *)malloc(sizeof(Maillon));
     if (new==NULL){
         printf("Erreur: creation maillon (enliste)\n");
         exit(1);
     }
     new->devis=devis;
-      
-    if (l==NULL){
+    if(l==NULL)
+    {
         new->suiv=NULL;
         l=new;
         return l;
     }
-    printf("\n1\n");
-    printf("%s\n",devis.entreprise);
-    printf("%s\n",((l->devis).entreprise));
-    while(strcmp(devis.entreprise, ((l->devis).entreprise))>0){
-        if(l->suiv==NULL){
-            break;
-        }
-        l=l->suiv;
+    if(strcmp(devis.entreprise , ((l->devis).entreprise))<0)
+    {
+        new->suiv=l;
+        l=new;
+        return l;
     }
-    new->suiv=l;
-    l=new;  
-    return start;
+    l->suiv=enliste(l->suiv, devis);
+    return l;
 }
 
 
@@ -143,6 +138,7 @@ void afficher1Travaux(Offre **o, char travaux[], int nb)
         return;
     }
     longueur=longListe((o[pos]->ldevis));
+    printf("%d",longueur);
     printf("\n%s :\n", travaux);
     for(int a=0; a<longueur; a++)
         afficher1Devis((o[pos]->ldevis)->devis);
@@ -151,7 +147,7 @@ void afficher1Travaux(Offre **o, char travaux[], int nb)
 void afficherTout(Offre **o, int nb)
 {
     int i;
-    for(i=0; i<=nb; i++)
+    for(i=0; i<=nb-1; i++)
         afficher1Travaux(o, o[i]->travaux, nb);
 }
 
