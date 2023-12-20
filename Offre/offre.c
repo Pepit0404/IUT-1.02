@@ -125,6 +125,21 @@ void afficher1Devis(Devis d)
     printf("Entreprise : %s\tAdresse : %s\nCapital : %d\tDuree : %d\tCout : %d\n", d.entreprise, d.adresse, d.capital, d.duree, d.cout);
 }
 
+void afficherDevisEntreprise(Liste l, char entreprise[])
+{
+    int longueur;
+    longueur=longListe(l);
+    for(int a=0; a<longueur; a++)
+    {
+        if(strcmp(entreprise, (l->devis).entreprise)==0)
+        {
+            afficher1Devis(l->devis);
+            return ; 
+        }
+    }
+    printf("Cette entreprise n'existe pas ! \n");
+}
+
 void afficher1Travaux(Offre **o, char travaux[], int nb)
 {
     int pos, trouve, longueur;
@@ -137,7 +152,6 @@ void afficher1Travaux(Offre **o, char travaux[], int nb)
         return;
     }
     longueur=longListe(l);
-    printf("%d",longueur);
     printf("\n%s :\n", travaux);
     for(int a=0; a<longueur; a++){
         afficher1Devis(l->devis);

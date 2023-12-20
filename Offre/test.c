@@ -13,8 +13,6 @@ int main(void){
     o=(Offre **)malloc(5*sizeof(Offre *));
     if(o==NULL){printf("PB de malloc pour offre !\n");exit(1);}
     size=readOffre(o, size, &max);
-    afficherTout(o, size);
-    afficherTout(o, size);
-    afficher1Travaux(o, "Plomberie", size);
+    afficherDevisEntreprise(o[0]->ldevis, "Dolcé");
     return 0;
 }
