@@ -3,8 +3,8 @@
 #include <string.h>
 
 typedef struct {
-    char entreprise[30];
-    char adresse[50];
+    char entreprise[32];
+    char adresse[52];
     int capital;
     int duree;
     int cout;

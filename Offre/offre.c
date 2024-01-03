@@ -140,6 +140,21 @@ void afficherDevisEntreprise(Liste l, char entreprise[])
     printf("Cette entreprise n'existe pas ! \n");
 }
 
+int rechercheTravaux(Offre **o, char travaux[], int nb, int *trouve)
+{
+    int i;
+    for(i=0; i<nb; i++)
+    {
+        if(strcmp(travaux, o[i]->travaux)==0)
+        {
+            *trouve=1;
+            return i;
+        }
+    }
+    *trouve=0;
+    return i;
+}
+
 void afficher1Travaux(Offre **o, char travaux[], int nb)
 {
     int pos, trouve, longueur;
@@ -166,24 +181,6 @@ void afficherTout(Offre **o, int nb)
     for(i=0; i<=nb-1; i++)
         afficher1Travaux(o, o[i]->travaux, nb);
 }
-
-
-
-int rechercheTravaux(Offre **o, char travaux[], int nb, int *trouve)
-{
-    int i;
-    for(i=0; i<nb; i++)
-    {
-        if(strcmp(travaux, o[i]->travaux)==0)
-        {
-            *trouve=1;
-            return i;
-        }
-    }
-    *trouve=0;
-    return i;
-}
-
 
 int readOffre(Offre *of[], int size, int *max){
     FILE *file;
