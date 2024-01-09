@@ -36,7 +36,12 @@ Liste enliste(Liste l, Devis devis)
     return l;
 }
 
-/*
+//vrai si 0 sinon 1
+int estVide(Liste l){
+    if (l->suiv==NULL) return 0;
+    return 1;
+}
+
 Liste delTete(Liste l){
     Maillon *old;
     if (l==NULL){
@@ -48,7 +53,7 @@ Liste delTete(Liste l){
     free(old);
     return l;
 }
-
+/*
 Liste deliste(Liste l, char *entreprise){
     Liste start=l;
     if (l==NULL){
@@ -201,6 +206,38 @@ int readOffre(Offre *of[], int size, int *max){
     return size;
 }
 
-void affiche(){
+/*
+*       PARTIE 2
+*/
+
+
+//Fonction qui garde les moins chère
+void sortByCost(Offre *of[], int size){
+    Maillon *save;
+    save=(Maillon*)malloc(sizeof(Maillon));
+    if (save==NULL){
+        printf("Erreur: création save (sortByCost)\n");
+        exit(1);
+    }
+    for (int i=0; i<size; i++){
+        save=of[i]->ldevis;
+        of[i]->ldevis=of[i]->ldevis->suiv;
+        while (estVide(of[i]->ldevis)!=0){
+            if(of[i]->ldevis->devis.cout < save->devis.cout){
+                free(save);
+                save = of[i]->ldevis;
+            }
+            else if (of[i]->ldevis->devis.cout == save->devis.cout && of[i]->ldevis->devis.capital > save->devis.capital){
+                free(save);
+                save = of[i]->ldevis;
+            }
+            else
+                of[i]->ldevis = delTete(of[i]->ldevis);
+            
+        }
+    }
+}
+
+void affiche(void){
     printf("Coucou je suis la\n");
 }
