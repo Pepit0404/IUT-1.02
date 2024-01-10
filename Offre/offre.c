@@ -229,7 +229,6 @@ void sortByCost(Offre *of[], int size){
         l=enliste(l, save);
         of[i]->ldevis=l;
         afficher1Travaux(of, of[i]->travaux, size);
-        printf("Connard\n\n");
     }
 }
 
