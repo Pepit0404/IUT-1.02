@@ -5,7 +5,7 @@
     Partie File
 ###################################################
 */
-int longListe(Liste l)
+int longListe(ListeDevis l)
 {
     if(l==NULL)
         return 0;
@@ -13,7 +13,7 @@ int longListe(Liste l)
 }
 
 //priver
-Liste insererEnTete(Liste l, Devis devis){
+ListeDevis insererEnTete(ListeDevis l, Devis devis){
     Maillon *new;
     new=(Maillon *)malloc(sizeof(Maillon));
     if (new==NULL){
@@ -26,7 +26,7 @@ Liste insererEnTete(Liste l, Devis devis){
     return l;
 }
 
-Liste enliste(Liste l, Devis devis)
+ListeDevis enliste(ListeDevis l, Devis devis)
 {
     if(l==NULL)
         return insererEnTete(l, devis);
@@ -37,12 +37,12 @@ Liste enliste(Liste l, Devis devis)
 }
 
 //vrai si 0 sinon 1
-int estVide(Liste l){
+int estVide(ListeDevis l){
     if (l==NULL) return 0;
     return 1;
 }
 
-Liste delTete(Liste l){
+ListeDevis delTete(ListeDevis l){
     Maillon *old;
     if (l==NULL){
         printf("Erreur: impossible de delister une liste vide");
@@ -130,7 +130,7 @@ void afficher1Devis(Devis d)
     printf("Entreprise : %s\tAdresse : %s\nCapital : %d\tDuree : %d\tCout : %.2f\n", d.entreprise, d.adresse, d.capital, d.duree, d.cout);
 }
 
-void afficherDevisEntreprise(Liste l, char entreprise[])
+void afficherDevisEntreprise(ListeDevis l, char entreprise[])
 {
     int longueur;
     longueur=longListe(l);
@@ -163,7 +163,7 @@ int rechercheTravaux(Offre **o, char travaux[], int nb, int *trouve)
 void afficher1Travaux(Offre **o, char travaux[], int nb)
 {
     int pos, trouve, longueur;
-    Liste l;
+    ListeDevis l;
     pos=rechercheTravaux(o, travaux, nb, &trouve);
     l=o[pos]->ldevis;
     if(trouve==0)
@@ -207,14 +207,14 @@ int readOffre(Offre *of[], int size, int *max){
 }
 
 /*
-*       PARTIE 2
+       PARTIE 2
 */
 
 
 //Fonction qui garde les moins chère
 void sortByCost(Offre *of[], int size){
     Devis save;
-    Liste l;
+    ListeDevis l;
     for (int i=0; i<size; i++){
         l=of[i]->ldevis;
         save=l->devis;
@@ -228,8 +228,6 @@ void sortByCost(Offre *of[], int size){
         }
         l=enliste(l, save);
         of[i]->ldevis=l;
-        afficher1Travaux(of, of[i]->travaux, size);
-        printf("Connard\n\n");
     }
 }
 
@@ -241,17 +239,92 @@ void affiche(void){
 *       PARTIE 3
 */
 
-/*
-Tache ** chargerTache(Offre *o[], int size)
+bool ListeVide(Liste l)
+{
+    if (l==NULL) return 0;
+    return 1;
+}
+
+void afficherSuccesseur(Liste l)
+{
+    while(ListeVide(l)==1)
+    { 
+        printf("%s\t",l->nom);
+        l=l->suiv;
+    }
+}
+
+void afficherTaches(Tache *t[], int size)
 {
     int a;
+    for(a=0; a<size; a++)
+    {
+        printf("\n1\n");
+        printf("nom : %s      duree : %d      nbPred : %d\n",t[a]->tache, t[a]->duree, t[a]->nbPred);
+        printf("Noms des successeur :" afficherSuccesseur(t[a]->succ));
+    }
+}
+
+int rechercheTache(Tache *t[], int size, char successeur[])
+{
+    int a;
+    for(a=0; a<size; a++)
+        if(strcmp(successeur, t[a]->tache)==0)
+            return a;
+    return -1;
+}
+
+Liste EnTeteTache(Liste l, char successeur[])
+{
+    Maillon2 *new;
+    new=(Maillon2 *)malloc(sizeof(Maillon2));
+    if (new==NULL){
+        printf("Erreur: creation maillon (enliste)\n");
+        exit(1);
+    }
+    strcpy(new->nom,successeur);
+    new->suiv=l;
+    l=new;
+    return l;
+}
+
+Liste enlisteTache(Liste l, char successeur[])
+{
+    if(l==NULL)
+        return EnTeteTache(l, successeur);
+    if(strcmp(l->nom , successeur)!=0)
+        return EnTeteTache(l, successeur);
+    l->suiv=enlisteTache(l->suiv, successeur);
+    return l;
+}
+
+Tache ** chargerTache(Offre *o[], int size)
+{
+    FILE *flot;
+    flot=fopen("précédents.txt","r");
+    if(flot==NULL)
+    {
+        printf("Pb avec l'ouverture de précédent.txt !\n");
+        exit(1);
+    }
+    char predecesseur[20], successeur[20];
+    int a, pos;
     Tache **t;
     t=(Tache **)malloc(size*sizeof(Tache *));
     if(t==NULL){printf("PB de malloc pour Tache !\n");exit(1);}
     for(a=0;a<size;a++)
     {
         strcpy(t[a]->tache , o[a]->travaux);
-        t[a]
+        t[a]->duree=(o[a]->ldevis->devis).duree;
     }
+    while(!feof(flot))
+    {
+        fscanf(flot,"%s",predecesseur);
+        fscanf(flot,"%s",successeur);
+        pos=rechercheTache(t, size, successeur);
+        if(pos!=-1)
+            t[pos]->nbPred=t[pos]->nbPred+1;
+        enlisteTache(t[pos]->succ, successeur);
+    }
+    return t;
 }
-*/
