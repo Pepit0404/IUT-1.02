@@ -20,6 +20,19 @@ typedef struct {
     Maillon *ldevis;
 } Offre;
 
+
+typedef enum{faux,vrai}bool;
+
+typedef struct {
+    char tache[30] ; // nom de la tâche ex : Plomberie
+    int duree ; // durée de la tâche
+    int nbPred ; // nombre de prédécesseurs de la tâche
+    Liste succ ; // liste des successeurs de la tâche
+    int dateDebut ; // date de début au plutôt de la tâche
+    bool traite ; // booléen : la tâche est-elle traitée
+} Tache;
+
+
 Liste enfile(Liste l, Devis devis);
 int newOffre(Offre *tab[], int size, int *tMax, char *travaux);
 Devis Lire1Devis(FILE *flot);

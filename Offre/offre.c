@@ -232,13 +232,31 @@ void sortByCost(Offre *of[], int size){
                 free(save);
                 save = of[i]->ldevis;   
             }
-            else{ 
-                of[i]->ldevis = delTete(of[i]->ldevis);
-            }
+            of[i]->ldevis = delTete(of[i]->ldevis);
         }
+        of[i]->ldevis=save ;
     }
 }
 
 void affiche(void){
     printf("Coucou je suis la\n");
 }
+
+/*
+*       PARTIE 3
+*/
+
+/*
+Tache ** chargerTache(Offre *o[], int size)
+{
+    int a;
+    Tache **t;
+    t=(Tache **)malloc(size*sizeof(Tache *));
+    if(t==NULL){printf("PB de malloc pour Tache !\n");exit(1);}
+    for(a=0;a<size;a++)
+    {
+        strcpy(t[a]->tache , o[a]->travaux);
+        t[a]
+    }
+}
+*/

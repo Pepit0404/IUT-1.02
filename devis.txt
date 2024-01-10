@@ -12,7 +12,7 @@ Electro Maître
 200
 Plomberie
 DolcéAqua
-33, zone Industriel Aubière -63170 - Aubière
+33 -63170 - Aubière
 9999999 
 40
 500
@@ -33,7 +33,7 @@ Kozan
 8 rue du paturage Olloix
 10000000
 10
-0.25
+200
 Charpenterie
 Tartière
 rue du bourg
