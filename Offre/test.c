@@ -13,8 +13,9 @@ int main(void){
     o=(Offre **)malloc(5*sizeof(Offre *));
     if(o==NULL){printf("PB de malloc pour offre !\n");exit(1);}
     size=readOffre(o, size, &max);
-    afficherTout(o, size);
+    //afficherTout(o, size);
+    printf("\n\n");
     sortByCost(o, size);
-    afficherTout(o, size);
+    //afficherTout(o, size);
     return 0;
 }
