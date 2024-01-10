@@ -174,6 +174,7 @@ void afficher1Travaux(Offre **o, char travaux[], int nb)
     longueur=longListe(l);
     printf("\n%s :\n", travaux);
     for(int a=0; a<longueur; a++){
+        printf("\n");
         afficher1Devis(l->devis);
         l=l->suiv;
     }
@@ -183,18 +184,20 @@ void afficher1Travaux(Offre **o, char travaux[], int nb)
 void afficherTout(Offre **o, int nb)
 {
     int i;
-    for(i=0; i<=nb-1; i++)
+    for(i=0; i<=nb-1; i++){
         afficher1Travaux(o, o[i]->travaux, nb);
+        printf("\n-------------------------------------------------------------------------------------------------------------\n");
+    }
 }
 
-int readOffre(Offre *of[], int size, int *max){
+int readOffre(Offre *of[], int size, int *max, char *fileName){
     FILE *file;
     Devis devis;
     char travaux[30];
-    file = fopen("devis.txt", "r");
+    file = fopen(fileName, "r");
     if (file==NULL){
-        printf("Erreur: ouverture de 'devis.txt'\n");
-        exit(1);
+        printf("Erreur: ouverture de '%s'\n", fileName);
+        return -1;
     }
     fscanf(file, "%s%*c", travaux);
     while (feof(file)==0){
