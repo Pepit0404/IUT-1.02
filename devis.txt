@@ -3,22 +3,22 @@ Fabrice55
 55, zone Industriel Aubière -63170 - Aubière
 550000
 50
-500
+5000
 Electricité
 Electro Maître
 50, zone industrielle sud – 15000 – Aurillac
 450000
 60
-42000
+200
 Plomberie
 DolcéAqua
 33, zone Industriel Aubière -63170 - Aubière
-450000
+9999999 
 40
-27000
+500
 Plomberie
 Dolcé
--63170 - Aubière
+63170 - Aubière
 8000
 80
 87000
@@ -28,3 +28,15 @@ Maître
 50000
 6
 4000
+Charpenterie
+Kozan
+8 rue du paturage Olloix
+10000000
+10
+0.25
+Charpenterie
+Tartière
+rue du bourg
+5000
+25
+600

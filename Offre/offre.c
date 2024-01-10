@@ -121,13 +121,13 @@ Devis Lire1Devis(FILE *flot)
     d.adresse[strlen(d.adresse)-1]='\0';
     fscanf(flot,"%d",&d.capital);
     fscanf(flot,"%d",&d.duree); 
-    fscanf(flot,"%d%*c",&d.cout);
+    fscanf(flot,"%f%*c",&d.cout);
     return d;
 }
 
 void afficher1Devis(Devis d)
 {
-    printf("Entreprise : %s\tAdresse : %s\nCapital : %d\tDuree : %d\tCout : %d\n", d.entreprise, d.adresse, d.capital, d.duree, d.cout);
+    printf("Entreprise : %s\tAdresse : %s\nCapital : %d\tDuree : %d\tCout : %.2f\n", d.entreprise, d.adresse, d.capital, d.duree, d.cout);
 }
 
 void afficherDevisEntreprise(Liste l, char entreprise[])
@@ -222,6 +222,7 @@ void sortByCost(Offre *of[], int size){
     for (int i=0; i<size; i++){
         save=of[i]->ldevis;
         of[i]->ldevis=of[i]->ldevis->suiv;
+         printf("\n%d\n",i);
         while (estVide(of[i]->ldevis)!=0){
             if(of[i]->ldevis->devis.cout < save->devis.cout){
                 free(save);
@@ -229,11 +230,11 @@ void sortByCost(Offre *of[], int size){
             }
             else if (of[i]->ldevis->devis.cout == save->devis.cout && of[i]->ldevis->devis.capital > save->devis.capital){
                 free(save);
-                save = of[i]->ldevis;
+                save = of[i]->ldevis;   
             }
-            else
+            else{ 
                 of[i]->ldevis = delTete(of[i]->ldevis);
-            
+            }
         }
     }
 }

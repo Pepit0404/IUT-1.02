@@ -7,7 +7,7 @@ typedef struct {
     char adresse[52];
     int capital;
     int duree;
-    int cout;
+    float cout;
 } Devis;
 
 typedef struct maillon {
@@ -27,3 +27,4 @@ void afficher1Devis(Devis d);
 void afficherDevisEntreprise(Liste l, char entreprise[]);
 int readOffre(Offre *of[], int size, int *max);
 void sortByCost(Offre *of[], int size);
+void afficherTout(Offre **o, int nb);
