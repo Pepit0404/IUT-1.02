@@ -21,7 +21,7 @@ typedef struct {
 } Offre;
 
 
-typedef enum{faux,vrai}bool;
+typedef enum{False,True}bool;
 
 typedef struct {
     char tache[30] ; // nom de la tâche ex : Plomberie
@@ -38,6 +38,6 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux);
 Devis Lire1Devis(FILE *flot);
 void afficher1Devis(Devis d);
 void afficherDevisEntreprise(Liste l, char entreprise[]);
-int readOffre(Offre *of[], int size, int *max);
+int readOffre(Offre *of[], int size, int *max, char *fileName);
 void sortByCost(Offre *of[], int size);
 void afficherTout(Offre **o, int nb);
