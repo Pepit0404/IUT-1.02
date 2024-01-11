@@ -1,3 +1,10 @@
+/**
+*\file test.c
+*\brief Permet de tester le code de offre.c
+*\author Erwan Mechoud
+*\author Samuel pinto
+*/
+
 #include "offre.h"
 
 int main(void){

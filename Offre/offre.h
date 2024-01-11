@@ -1,3 +1,10 @@
+/**
+*\file offre.h
+*\brief Contient les différentes structure de offre
+*\author Erwan Mechoud
+*\author Samuel pinto
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

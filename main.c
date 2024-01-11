@@ -1,3 +1,10 @@
+/**
+*\file main.c
+*\brief Code du menu permettant de naviguer entre les fonctions du code.
+*\author Erwan Mechoud
+*\author Samuel pinto
+*/
+
 #include <stdio.h>
 #include "Offre/offre.h"
 
