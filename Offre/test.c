@@ -26,6 +26,5 @@ int main(void){
     afficherTaches(t, size);
     printf("\n");
     Realisation(t, size);
-    Realisation(t, size);
     return 0;
 }

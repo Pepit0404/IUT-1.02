@@ -362,7 +362,7 @@ void afficherSuccesseur(Liste l)
     if (ListeVide(l)==1) printf("Aucune");
     else while(ListeVide(l)==0)
     {
-        printf("%s\t",l->nom);
+        printf("%s;\t",l->nom);
         l=l->suiv;
     }
 }
@@ -394,6 +394,7 @@ void afficherTaches(Tache *t[], int size)
 *\param [ out ] a compteur d'une boucle
 *\return la position de la tache ou -1 si elle n'existe pas
 */
+
 //-1 si pas trouvé
 int rechercheTache(Tache *t[], int size, char successeur[])
 {
@@ -633,7 +634,7 @@ File Realisation(File f, Tache *t[], int *size)
 void Realisation(Tache *t[], int size)
 {
     File f;
-    Liste l ;
+    Liste l;
     char ti[30];
     int pos;
     f=FileNouv(f);
@@ -642,7 +643,6 @@ void Realisation(Tache *t[], int size)
             f=ajouterQueue(f,t[a]);
     while(FileVide(f)==0)
     {
-        teteFile(f);
         strcpy(ti,teteFile(f));
         f=supprimerTete(f);
         pos=rechercheTache(t, size, ti);
@@ -652,18 +652,22 @@ void Realisation(Tache *t[], int size)
             exit(1);
         }
         l=t[pos]->succ;
-        for(int j=0;j<longListeL(l);j++)
+        
+        int tour=longListeL(l);
+        for(int j=0; j<tour; j++)
         {
-            for(int i =0; i<size; i++)
+            char tete[20];
+            strcpy(tete,teteL(l));
+            for(int i=0; i<size; i++)
             {
                 if(i!=pos)
                 {
-                    if(strcmp(teteL(l),t[i]->tache)==0)
+                    if(strcmp(tete, t[i]->tache)==0)
                     {
-                        t[i]->dateDebut=t[pos]->duree+t[i]->dateDebut+t[pos]->dateDebut;
-                        t[i]->nbPred-=1;
-                        if(t[i]->nbPred==0)
-                              f=ajouterQueue(f,t[i]);
+                        t[i]->dateDebut=t[pos]->duree + t[pos]->dateDebut;
+                        (t[i]->nbPred)-=1;
+                        if(t[i]->nbPred == 0)
+                            f=ajouterQueue(f,t[i]);
                     }
                     if(l->suiv!=NULL)
                         l=l->suiv;
@@ -676,6 +680,7 @@ void Realisation(Tache *t[], int size)
     {
         printf("Tache : %s      Date début : %d\n",t[c]->tache,t[c]->dateDebut);
         printf("Traité : %d\n",t[c]->traite);
+        printf("\n-------------------------------------------------------------------\n");
     }
 }
 
