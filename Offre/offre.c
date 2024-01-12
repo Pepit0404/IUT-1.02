@@ -3,6 +3,7 @@
 *\brief Fichier contenant le code relatif aux Offres
 *\author Erwan Mechoud
 *\author Samuel pinto
+*\author Sacha Vinel
 */
 
 
@@ -562,3 +563,62 @@ Tache ** chargerTache(Offre *o[], int size)
     return t;
 }
 */
+
+/*
+        Partie 4
+*/
+
+File FileNouv(File f)
+{   
+    f.t=NULL;
+    f.q=NULL;
+    return f;
+}
+
+File ajouterQueue(File f, Tache *t)
+{
+    Maillon3 *m;
+    m=(Maillon3 *)malloc(sizeof(Maillon3));
+    if(m==NULL)
+    {
+        printf("Erreur de malloc du maillon3 m !\n");
+        exit(1);
+    }
+    
+    m->tache=*t;
+    m->suiv=NULL;
+    if(f.t==NULL)
+    {
+        f.t=m;
+        f.q=m;
+        return f;
+    }
+    f.q->suiv=m;
+    f.q=m;
+    return f;
+}
+
+File chargementFile(File f, Tache *t[], int size)
+{
+    int a, i=0;
+    for(a=0; a<size; a++)
+    {
+        if(t[a]->nbPred==0)
+        {
+            f=ajouterQueue(f, t[a]);
+        }
+    }
+    return f;
+}
+
+void afficherFile(File f)
+{
+    while(1)
+    {
+        printf("%s\n", (f.t->tache).tache);
+        printf("Date : %d\n\n", (f.t->tache).dateDebut);
+        if(f.t->suiv==NULL)
+            break;
+        f.t=f.t->suiv;
+    }
+}
