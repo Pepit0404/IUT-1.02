@@ -362,7 +362,7 @@ void afficherSuccesseur(Liste l)
     if (ListeVide(l)==1) printf("Aucune");
     else while(ListeVide(l)==0)
     {
-        printf("%s\t",l->nom);
+        printf("%s;\t",l->nom);
         l=l->suiv;
     }
 }
@@ -386,6 +386,19 @@ void afficherTaches(Tache *t[], int size)
     }
 }
 
+void afficherTachesPlus(Tache *t[], int size)
+{
+    int a;
+    for(a=0; a<size; a++)
+    {
+        printf("\n");
+        printf("nom : %s      duree : %d    debut : %d      nbPred : %d\n",t[a]->tache, t[a]->duree, t[a]->dateDebut, t[a]->nbPred);
+        printf("Noms des successeur : " );
+        afficherSuccesseur(t[a]->succ);
+        printf("\n");
+    }
+}
+
 /**
 *\brief recherche une tache dans le tableau
 *\param [ in ] t tableau des taches
@@ -394,6 +407,7 @@ void afficherTaches(Tache *t[], int size)
 *\param [ out ] a compteur d'une boucle
 *\return la position de la tache ou -1 si elle n'existe pas
 */
+
 //-1 si pas trouvé
 int rechercheTache(Tache *t[], int size, char successeur[])
 {
@@ -621,73 +635,22 @@ File supprimerTete(File f)
     return f;
 }
 
-/**
-*\brief permet d'ajouter les taches dans l'autre dans la liste d'attente et de les réaliser pour passer à la suivante
-*\param [ in , out ] t tableau des taches
-*\param [ in , out ] size taille logique de t
-*\param [ out ] f File d'attente des taches
-*\param [ out ] l liste des taches
-*\param [ out ] ti tache
-*\param pos position dans le tableau des taches
-*\param a compteur de boucle
-*\param j compteur de boucle
-*\param i compteur de boucle
-*\param c compteur de boucle
-*/
-void Realisation(Tache *t[], int size)
-{
-    File f;
-    Liste l ;
-    char ti[30];
-    int pos;
-    f=FileNouv(f);
-    for(int a=0;a<size;a++)
-        if(t[a]->nbPred ==0)
-            f=ajouterQueue(f,t[a]);
-    while(FileVide(f)==0)
-    {
-        teteFile(f);
-        strcpy(ti,teteFile(f));
-        f=supprimerTete(f);
-        pos=rechercheTache(t, size, ti);
-        if(pos==-1)
-        {
-            printf("La tache n'existe pas\n");
-            exit(1);
-        }
-        l=t[pos]->succ;
-        for(int j=0;j<longListeL(l);j++)
-        {
-            for(int i=0; i<size; i++)
-            {
-                if(i!=pos)
-                {
-                    if(strcmp(teteListe(l),t[i]->tache)==0)
-                    {
-                        t[i]->dateDebut=t[pos]->duree+t[i]->dateDebut+t[pos]->dateDebut;
-                        t[i]->nbPred-=1;
-                        if(t[i]->nbPred==0)
-                              f=ajouterQueue(f,t[i]);
-                    }
-                    if(l->suiv!=NULL)
-                        l=l->suiv;
-                }
-            }
-        }
-        t[pos]->traite=True;
-    }
-    for(int c=0; c<size; c++)
-    {
-        printf("Tache : %s      Date début : %d\n",t[c]->tache,t[c]->dateDebut);
-        printf("Traité : %d\n",t[c]->traite);
-    }
-}
-
 
 void fusion(Tache *P[], int p, Tache *D[], int d, Tache *F[]){
     int i=0, j=0;
     while (p>i && d>j){
-        if(P[i]->dateDebut < D[j]->dateDebut){
+        if (P[i]->dateDebut == D[j]->dateDebut){
+            if (P[i]->duree < D[i]->duree){
+                F[i+j]=P[i];
+                i++;
+            }
+            else {
+                F[i+j]=D[j];
+                j++;
+            }
+        }
+        
+        else if(P[i]->dateDebut < D[j]->dateDebut){
             F[i+j]=P[i];
             i++;
         }
@@ -708,7 +671,7 @@ void fusion(Tache *P[], int p, Tache *D[], int d, Tache *F[]){
 
 
 void cut(Tache *P[], int i, int j, Tache *D[]){
-    int a;
+    int a=0;
     while (i<j){
         D[a]=P[i];
         i++;
@@ -733,4 +696,97 @@ void sortByDate(Tache *t[], int size){
     fusion(D, size/2, F, size-size/2, t);
     free(D);
     free(F);
+}
+
+/**
+*\brief permet d'ajouter les taches dans l'autre dans la liste d'attente et de les réaliser pour passer à la suivante
+*\param [ in , out ] t tableau des taches
+*\param [ in , out ] size taille logique de t
+*\param [ out ] f File d'attente des taches
+*\param [ out ] l liste des taches
+*\param [ out ] ti tache
+*\param pos position dans le tableau des taches
+*\param a compteur de boucle
+*\param j compteur de boucle
+*\param i compteur de boucle
+*\param c compteur de boucle
+*/
+void Realisation(Tache *t[], int size)
+{
+    File f;
+    Liste l;
+    char ti[30];
+    int pos;
+    f=FileNouv(f);
+    for(int a=0;a<size;a++)
+        if(t[a]->nbPred ==0)
+            f=ajouterQueue(f,t[a]);
+    while(FileVide(f)==0)
+    {
+        strcpy(ti,teteFile(f));
+        f=supprimerTete(f);
+        pos=rechercheTache(t, size, ti);
+        if(pos==-1)
+        {
+            printf("La tache n'existe pas\n");
+            exit(1);
+        }
+        l=t[pos]->succ;
+        
+        int tour=longListeL(l);
+        for(int j=0; j<tour; j++)
+        {
+            char tete[20];
+            strcpy(tete,teteL(l));
+            for(int i=0; i<size; i++)
+            {
+                if(i!=pos)
+                {
+                    if(strcmp(tete, t[i]->tache)==0)
+                    {
+                        t[i]->dateDebut=t[pos]->duree + t[pos]->dateDebut;
+                        (t[i]->nbPred)-=1;
+                        if(t[i]->nbPred == 0)
+                            f=ajouterQueue(f,t[i]);
+                    }
+                    if(l->suiv!=NULL)
+                        l=l->suiv;
+                }
+            }
+        }
+        t[pos]->traite=True;
+    }
+    sortByDate(t, size);
+    for(int c=0; c<size; c++)
+    {
+        printf("Tache : %s      Date début : %d\n",t[c]->tache,t[c]->dateDebut);
+        printf("Traité : %d\n",t[c]->traite);
+        printf("\n-------------------------------------------------------------------\n");
+    }
+    
+}
+
+/**
+*\brief 
+*\param t tbleau de tache
+*\param size taille logique du tableau
+*/
+void displayTime(Tache *t[], int size){
+    printf("\nLe projet a pour duree: %d jours\n", t[size-1]->dateDebut+t[size-1]->duree);
+}
+
+/**
+*\brief 
+*\param t tableau de tache
+*\param size taille logique du tableau
+*\param jour jour de référence
+*/
+void jour(Tache *t[],int size,int jour){
+    printf("Il reste : \n");
+    for(int i=0; i<size; i++){
+        if(jour<t[i]->dateDebut + t[i]->duree){
+            printf("\t-%s\n", t[i]->tache);
+        }
+    }
+    printf(" à réaliser au jour %d\n",jour);
 }

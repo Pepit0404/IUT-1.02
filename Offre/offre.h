@@ -76,7 +76,10 @@ Liste enlisteTache(Liste l, char successeur[]);
 Liste EnTeteTache(Liste l, char successeur[]);
 int rechercheTache(Tache *t[], int size, char successeur[]);
 void afficherTaches(Tache *t[], int size);
+void afficherTachesPlus(Tache *t[], int size);
 void afficherSuccesseur(Liste l);
 bool ListeVide(Liste l);
 
 void Realisation(Tache *t[], int size);
+void displayTime(Tache *t[], int size);
+void jour(Tache *t[],int size,int jour);

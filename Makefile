@@ -14,4 +14,8 @@ test.o: Offre/test.c Offre/offre.h
 	gcc -Wall -g -c Offre/test.c
 
 clean:
+<<<<<<< HEAD
 	rm *o test testT exe
+=======
+	rm *o test exe
+>>>>>>> refs/remotes/origin/master

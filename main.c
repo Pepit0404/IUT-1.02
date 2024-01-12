@@ -24,13 +24,10 @@
 */
 int main(){
     int choix, error, tSize=0, tMax=5;
-    bool charger=False, run=True, option=False, dernier=False;
+    bool charger=False, run=True, option=False;
     Offre **tOffre;
     tOffre=(Offre **)malloc(5*sizeof(Offre *));
     if(tOffre==NULL){printf("PB de malloc pour offre !\n");exit(1);}
-    Tache **tTache;
-    tTache=(Tache **)malloc(5*sizeof(Tache *));
-    if(tTache==NULL){printf("PB de malloc pour tache !\n");exit(1);}
     while (run==True){
         printf("\nQue voullez-vous faire ?\n");
         printf("\t1. Charger\n");
@@ -55,8 +52,8 @@ int main(){
 
         if (choix==1){
             char nameF[30];
-            printf("Nom du fichier: ");
-            scanf("%s%*c", nameF);
+            printf("Nom du fichier (devis.txt par defaut): ");
+            scanf("%s", nameF);
             tSize=readOffre(tOffre, tSize, &tMax, nameF);
             printf("\n\n");
             
@@ -71,31 +68,17 @@ int main(){
                 sortByCost(tOffre, tSize);
                 printf("Devis choisis avec succés\n");
                 afficherTout(tOffre, tSize);
-                option=True;
+                mini=True;
             }
-            else if(option==True)
-            {
-                if(choix==4)
-                {
-                    tSize=ChargementTache(tTache, tOffre, tSize);
-                    dernier=True;
-                }
-                if(choix==5)
-                {
-                    afficherTaches(tTache, tSize);
-                }
-                else if(dernier==True)
-                {
-                    if(choix==6)
-                    {
-                        Realisation(tTache, tSize);
-                    }
-                    else if (choix==7)
-                    {
-                        run=False;
-                    }
-                }
-                
+            else if (choix==4){
+                Tache **tTache;
+                tTache=(Tache **)malloc(tSize*sizeof(Tache *));
+                if(tTache==NULL){printf("PB de malloc pour tache !\n");exit(1);}
+                ttSize=ChargementTache(tTache, tOffre, tSize);
+                printf("\nChargement reussi\n");
+            }
+            else if (choix==5){
+                run=False;
             }
         }
     }
