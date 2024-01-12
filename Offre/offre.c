@@ -511,6 +511,11 @@ int ChargementTache(Tache *tabTache[], Offre **o, int size){
         Partie 4
 */
 
+/**
+*\brief donne la longueur d'une liste
+*\param [ in ] l la liste
+*\return la longueur de la liste
+*/
 int longListeL(Liste l)
 {
     if(l==NULL)
@@ -518,6 +523,11 @@ int longListeL(Liste l)
     return longListeL(l->suiv)+1;
 }
 
+/**
+*\brief crée une nouvelle file vide
+*\param [ in , out ] f file crée
+*\return la nouvelle file
+*/
 File FileNouv(File f)
 {   
     f.t=NULL;
@@ -525,12 +535,13 @@ File FileNouv(File f)
     return f;
 }
 
-Liste ListeNouv(Liste l)
-{
-    l->suiv=NULL;
-    return l;
-}
-
+/**
+*\brief ajoute une tache a la queue d'une file
+*\param [ in , out ] f la file
+*\param [ in ] t la tache ajouter
+*\param m maillon dans lequel on met la tache
+*\return la file mis à joue
+*/
 File ajouterQueue(File f, Tache *t)
 {
     Maillon3 *m;
@@ -554,6 +565,11 @@ File ajouterQueue(File f, Tache *t)
     return f;
 }
 
+/**
+*\brief dit si une file est vide
+*\param [ in ] f la file
+*\return 1 si elle est vide 0 si elle ne l'est pas
+*/
 bool FileVide(File f)
 {
     if(f.t==NULL)
@@ -562,8 +578,12 @@ bool FileVide(File f)
 }
 
 
- 
-char* teteL(Liste l)
+/**
+*\brief renvoie le nom de la tache au début de la liste
+*\param [ in ] l la liste
+*\return le nom de la tache du début da la liste
+*/
+char * teteListe(Liste l)
 {
     if(ListeVide(l))
     {
@@ -573,7 +593,12 @@ char* teteL(Liste l)
     return l->nom;
 }
 
-char *teteFile(File f)
+/**
+*\brief renvoie le nom de la tache au début de la file
+*\param [ in ] f la file
+*\return le nom de la tache au début de la file
+*/
+char * teteFile(File f)
 {
     if(FileVide(f))
     {
@@ -583,16 +608,13 @@ char *teteFile(File f)
     return (f.t->tache).tache;
 }
 
-void afficherFile(File f)
-{
-    while(f.t!=NULL)
-    {
-        printf("%s\n", (f.t->tache).tache);
-        printf("Date : %d\n\n", (f.t->tache).dateDebut);
-        f.t=f.t->suiv;
-    }
-}
 
+/**
+*\brief supprime la tete d'une file
+*\param [ in , out ] f la file
+*\param m maillon auxiliaire pour supprimer et pouvoir libérer l'espace mémoire
+*\return la file mis à jour
+*/
 File supprimerTete(File f)
 {
     Maillon3 *m;
@@ -612,37 +634,7 @@ File supprimerTete(File f)
     free(m);
     return f;
 }
-/* 
-File chargementFile(File f, Tache *t[], int size)
-{
-    int a ;
-    for(a=0; a<size; a++)
-    {
-        if(t[a]->nbPred==0)
-        {
-            f=ajouterQueue(f, t[a]);
-        }
-    }
-    return f;
-}
 
-File Realisation(File f, Tache *t[], int *size)
-{
-    int pos, rep, a;
-    pos=rechercheTache(t, *size, (f.t->tache).tache);
-    f=supprimerTete(f);
-    while(t[pos]->succ!=NULL)
-    {
-        rep=rechercheTache(t, *size, t[pos]->succ->nom);
-        t[rep]->nbPred=t[rep]->nbPred-1;
-        t[pos]->succ=t[pos]->succ->suiv;
-    }
-    for(a=pos; a<*size; a++)
-        t[a]=t[a+1];
-    *size=*size-1;
-    return f;
-}
-*/
 
 void fusion(Tache *P[], int p, Tache *D[], int d, Tache *F[]){
     int i=0, j=0;
@@ -677,6 +669,7 @@ void fusion(Tache *P[], int p, Tache *D[], int d, Tache *F[]){
     }
 }
 
+
 void cut(Tache *P[], int i, int j, Tache *D[]){
     int a=0;
     while (i<j){
@@ -685,6 +678,7 @@ void cut(Tache *P[], int i, int j, Tache *D[]){
         a++;
     }
 }
+
 
 void sortByDate(Tache *t[], int size){
     if (size==1) return;
@@ -704,6 +698,19 @@ void sortByDate(Tache *t[], int size){
     free(F);
 }
 
+/**
+*\brief permet d'ajouter les taches dans l'autre dans la liste d'attente et de les réaliser pour passer à la suivante
+*\param [ in , out ] t tableau des taches
+*\param [ in , out ] size taille logique de t
+*\param [ out ] f File d'attente des taches
+*\param [ out ] l liste des taches
+*\param [ out ] ti tache
+*\param pos position dans le tableau des taches
+*\param a compteur de boucle
+*\param j compteur de boucle
+*\param i compteur de boucle
+*\param c compteur de boucle
+*/
 void Realisation(Tache *t[], int size)
 {
     File f;
@@ -759,10 +766,21 @@ void Realisation(Tache *t[], int size)
     
 }
 
+/**
+*\brief 
+*\param t tbleau de tache
+*\param size taille logique du tableau
+*/
 void displayTime(Tache *t[], int size){
     printf("\nLe projet a pour duree: %d jours\n", t[size-1]->dateDebut+t[size-1]->duree);
 }
 
+/**
+*\brief 
+*\param t tableau de tache
+*\param size taille logique du tableau
+*\param jour jour de référence
+*/
 void jour(Tache *t[],int size,int jour){
     printf("Il reste : \n");
     for(int i=0; i<size; i++){

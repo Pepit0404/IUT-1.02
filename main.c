@@ -9,6 +9,19 @@
 #include <stdio.h>
 #include "Offre/offre.h"
 
+/**
+*\brief Menu permettant de naviguer entre les différentes fonctions du code
+*\param choix prend une valeur numérique pour choisir l'option souhaité
+*\param error code d'erreur du scanf pour vérifié la conformité du choix
+*\param tSize taille logique du tableau des offres 
+*\param tMax taille physique du tableau
+*\param charger permet de cacher puis d'activer certaine option
+*\param option permet de cacher puis d'activer certaine option
+*\param dernier permet de cacher puis d'activer certaine option
+*\param run condition de la boucle
+*\param tOffre tableau des offres
+*\param tTache tableau des Taches
+*/
 int main(){
     int choix, error, tSize=0, tMax=5;
     int ttSize;
@@ -18,7 +31,7 @@ int main(){
     tOffre=(Offre **)malloc(5*sizeof(Offre *));
     if(tOffre==NULL){printf("PB de malloc pour offre !\n");exit(1);}
     while (run==True){
-        printf("Que voullez-vous faire ?\n");
+        printf("\nQue voullez-vous faire ?\n");
         printf("\t1. Charger\n");
         if (charger==True){
             printf("\t2. Afficher les devis\n");
