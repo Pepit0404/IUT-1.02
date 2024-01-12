@@ -54,6 +54,9 @@ int readOffre(Offre *of[], int size, int *max, char *fileName);
 void sortByCost(Offre *of[], int size);
 void afficherTout(Offre **o, int nb);
 
+/**
+ * Partie 3
+*/
 Tache ** chargerTache(Offre *o[], int size);
 int ChargementTache(Tache *tabTache[], Offre **tabTravaux, int tLogO);
 Liste enlisteTache(Liste l, char successeur[]);

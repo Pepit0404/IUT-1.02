@@ -44,6 +44,8 @@ int main(){
             }
             else if (choix==3) {
                 sortByCost(tOffre, tSize);
+                printf("Devis choisis avec succés\n");
+                afficherTout(tOffre, tSize);
             }
             else if (choix==4){
                 run=False;
