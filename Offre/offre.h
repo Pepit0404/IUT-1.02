@@ -50,6 +50,15 @@ int newOffre(Offre *tab[], int size, int *tMax, char *travaux);
 Devis Lire1Devis(FILE *flot);
 void afficher1Devis(Devis d);
 void afficherDevisEntreprise(ListeDevis l, char entreprise[]);
-int readOffre(Offre *of[], int size, int *max);
+int readOffre(Offre *of[], int size, int *max, char *fileName);
 void sortByCost(Offre *of[], int size);
 void afficherTout(Offre **o, int nb);
+
+Tache ** chargerTache(Offre *o[], int size);
+int fChargementTache(Tache *tabTache[], int tMax, Offre **tabTravaux, int tLogO);
+Liste enlisteTache(Liste l, char successeur[]);
+Liste EnTeteTache(Liste l, char successeur[]);
+int rechercheTache(Tache *t[], int size, char successeur[]);
+void afficherTaches(Tache *t[], int size);
+void afficherSuccesseur(Liste l);
+bool ListeVide(Liste l);

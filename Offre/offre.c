@@ -390,8 +390,9 @@ bool ListeVide(Liste l)
 */
 void afficherSuccesseur(Liste l)
 {
-    while(ListeVide(l)==1)
-    { 
+    if (ListeVide(l)==0) printf("Aucune");
+    else while(ListeVide(l)==1)
+    {
         printf("%s\t",l->nom);
         l=l->suiv;
     }
@@ -408,9 +409,11 @@ void afficherTaches(Tache *t[], int size)
     int a;
     for(a=0; a<size; a++)
     {
-        printf("\n1\n");
+        printf("\n");
         printf("nom : %s      duree : %d      nbPred : %d\n",t[a]->tache, t[a]->duree, t[a]->nbPred);
-        printf("Noms des successeur :" afficherSuccesseur(t[a]->succ));
+        printf("Noms des successeur :" );
+        afficherSuccesseur(t[a]->succ);
+        printf("\n");
     }
 }
 
@@ -420,6 +423,7 @@ void afficherTaches(Tache *t[], int size)
 *\param
 *\return
 */
+//-1 si pas trouvé
 int rechercheTache(Tache *t[], int size, char successeur[])
 {
     int a;
@@ -471,33 +475,118 @@ Liste enlisteTache(Liste l, char successeur[])
 *\param
 *\return
 */
-Tache ** chargerTache(Offre *o[], int size)
-{
+int fChargementTache(Tache *tabTache[], int tMax, Offre **tabTravaux, int tLogO){
     FILE *flot;
-    flot=fopen("précédents.txt","r");
-    if(flot==NULL)
-    {
-        printf("Pb avec l'ouverture de précédent.txt !\n");
+    int pos=0;
+    char tache1[20], tache2[20];
+    flot = fopen("precedents.txt", "r");
+    if (flot == NULL){
+        printf("Erreur\tImpossible d'ouvir 'precedents.txt'\n");
+        return -1;
+    }
+    for (int i=0;i<tLogO;i++){
+        tabTache[i]=(Tache *)malloc(sizeof(Tache));
+        if (tabTache[i] == NULL) {
+                printf("Erreur: allocation mémoire pour tabTravaux[%d]\n", tLogO);
+                return -1;
+        }
+        strcpy(tabTache[i]->tache,tabTravaux[i]->travaux);
+        tabTache[i]->duree=tabTravaux[i]->ldevis->devis.duree;
+        tabTache[i]->nbPred = 0;
+        tabTache[i]->succ=NULL;
+        tabTache[i]->dateDebut=0;
+        tabTache[i]->traite=False;
+    }
+    while (!feof(flot)){
+        fscanf(flot, "%s %s", tache1,tache2);
+        pos=rechercheTache(tabTache,tLogO,tache1);
+        if(pos==-1){
+            printf ("Erreur: '%s' non existante\n", tache2);
+            exit(1);
+        }
+        tabTache[pos]->succ=enlisteTache(tabTache[pos]->succ,tache2);
+        pos=rechercheTache(tabTache,tLogO,tache2);
+        if(pos==-1){
+            printf ("Erreur: '%s' non existante\n", tache2);
+            exit(1);
+        }
+        tabTache[pos]->nbPred++;
+    }/*
+    for (int i=0;i<tLogO;i++){
+        printf("%s\n",tabTache[i]->tache);
+        printf("%d\n",tabTache[i]->nbPred);
+    }*/
+    return tLogO;
+}
+
+/*
+T   ache ** chargerTache(Offre *o[], int size){
+    Tache **t;
+    t=(Tache **)malloc(size * sizeof(Tache *));
+    if (t==NULL){printf("Vas te faire voir\n"); exit(1);}
+    for (int i=0; i<size-1; i++){
+        strcpy(t[i]->tache,o[i]->travaux);
+        t[i]->duree=(o[i]->ldevis->devis).duree;
+    }
+    char a[100], b[100];
+    FILE *file;
+    file = fopen("toto.txt", "r");
+    int place;
+    if (file==NULL){
+        printf("baise ta mère\n");
         exit(1);
     }
-    char predecesseur[20], successeur[20];
+    fscanf(file, "%s%*c", a);
+    printf("connard\n");
+    while (feof(file)==0){
+        fscanf(file, "%s", b);
+        place=rechercheTache(t, size, b);
+        if (place!=-1){
+            t[place]->succ=enlisteTache(t[place]->succ, b);
+        }
+    }
+    fclose(file);
+    return t;
+}
+
+
+
+
+Tache ** chargerTache(Offre *o[], int size)
+{
+    FILE *file = fopen("toto.txt", "r");
+    if(file==NULL)
+    {
+        printf("Erreur: ouverture de precedent.txt\n");
+        exit(1);
+    }
     int a, pos;
     Tache **t;
     t=(Tache **)malloc(size*sizeof(Tache *));
-    if(t==NULL){printf("PB de malloc pour Tache !\n");exit(1);}
-    for(a=0;a<size;a++)
+    if(t==NULL){printf("Erreur: malloc chargerTache\n");exit(1);}
+    for(a=0;a<size-1;a++)
     {
         strcpy(t[a]->tache , o[a]->travaux);
         t[a]->duree=(o[a]->ldevis->devis).duree;
     }
-    while(!feof(flot))
-    {
-        fscanf(flot,"%s",predecesseur);
-        fscanf(flot,"%s",successeur);
+
+
+    char predecesseur[100], successeur[100];
+    int toto;
+    fscanf(file, "%d", &toto);
+    printf("debug->%s\n", "Connard !!!!!!!!!!!!!!!!");
+    printf("toto\n");
+    while(!feof(file))
+    {   
+        
+        fscanf(file,"%*c%s",successeur);
         pos=rechercheTache(t, size, successeur);
         if(pos!=-1)
             t[pos]->nbPred=t[pos]->nbPred+1;
         enlisteTache(t[pos]->succ, successeur);
+        fscanf(file,"%s",predecesseur);
     }
+    fclose(file);
     return t;
 }
+*/
