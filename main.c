@@ -3,6 +3,7 @@
 *\brief Code du menu permettant de naviguer entre les fonctions du code.
 *\author Erwan Mechoud
 *\author Samuel pinto
+*\author Sacha Vinel
 */
 
 #include <stdio.h>

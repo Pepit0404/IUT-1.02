@@ -3,6 +3,7 @@
 *\brief Permet de tester le code de offre.c
 *\author Erwan Mechoud
 *\author Samuel pinto
+*\author Sacha Vinel
 */
 
 #include "offre.h"
@@ -25,5 +26,9 @@ int main(void){
     s=ChargementTache(t, o, size);
     afficherTaches(t, s);
     printf("\n");
+    File f;
+    f=FileNouv(f);
+    f=chargementFile(f, t, size);
+    afficherFile(f);
     return 0;
 }

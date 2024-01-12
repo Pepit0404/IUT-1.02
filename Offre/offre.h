@@ -3,6 +3,7 @@
 *\brief Contient les différentes structure de offre
 *\author Erwan Mechoud
 *\author Samuel pinto
+*\author Sacha Vinel
 */
 
 #include <stdlib.h>
@@ -27,6 +28,7 @@ typedef struct {
     Maillon *ldevis;
 } Offre;
 
+//  PARTIE 3
 
 typedef enum{False,True}bool;
 
@@ -44,8 +46,19 @@ typedef struct {
     bool traite ; // booléen : la tâche est-elle traitée
 } Tache;
 
+//  PARTIE 4
 
-ListeDevis enfile(ListeDevis l, Devis devis);
+typedef struct maillon3{
+    Tache tache;
+    struct maillon3 *suiv;
+} Maillon3;
+
+typedef struct{
+    Maillon3 *t;
+    Maillon3 *q;
+} File;
+
+ListeDevis enliste(ListeDevis l, Devis devis);
 int newOffre(Offre *tab[], int size, int *tMax, char *travaux);
 Devis Lire1Devis(FILE *flot);
 void afficher1Devis(Devis d);
@@ -65,3 +78,10 @@ int rechercheTache(Tache *t[], int size, char successeur[]);
 void afficherTaches(Tache *t[], int size);
 void afficherSuccesseur(Liste l);
 bool ListeVide(Liste l);
+
+/**
+ * Partie 4
+*/
+File chargementFile(File f, Tache *t[], int size);
+File FileNouv(File f);
+void afficherFile(File f);
