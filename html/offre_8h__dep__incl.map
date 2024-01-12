@@ -1,6 +1,0 @@
-<map id="Offre/offre.h" name="Offre/offre.h">
-<area shape="rect" id="node1" title="Contient les différentes structure de offre." alt="" coords="95,5,198,32"/>
-<area shape="rect" id="node2" href="$main_8c.html" title="Code du menu permettant de naviguer entre les fonctions du code." alt="" coords="5,80,72,107"/>
-<area shape="rect" id="node3" href="$offre_8c.html" title="Fichier contenant le code relatif aux Offres." alt="" coords="96,80,197,107"/>
-<area shape="rect" id="node4" href="$test_8c.html" title="Permet de tester le code de offre.c." alt="" coords="222,80,317,107"/>
-</map>
