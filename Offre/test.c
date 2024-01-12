@@ -18,6 +18,7 @@ int main(void){
     afficherTout(o, size);
     sortByCost(o, size);
     afficherTout(o, size);
+
     Tache **t;
     t=(Tache **)malloc(size*sizeof(Tache *));
     if(t==NULL){printf("PB de malloc pour tache !\n");exit(1);}

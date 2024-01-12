@@ -678,3 +678,53 @@ void Realisation(Tache *t[], int size)
         printf("Traité : %d\n",t[c]->traite);
     }
 }
+
+
+void fusion(Tache *P[], int p, Tache *D[], int d, Tache *F[]){
+    int i=0, j=0;
+    while (p>i && d>j){
+        if(P[i]->dateDebut < D[j]->dateDebut){
+            F[i+j]=P[i];
+            i++;
+        }
+        else {
+            F[i+j]=D[j];
+            j++;
+        }
+    }
+    while (i<p){
+        F[i+j]=P[i];
+        i++;
+    }
+    while (j<d){
+        F[i+j]=D[j];
+        j++;
+    }
+}
+
+void cut(Tache *P[], int i, int j, Tache *D[]){
+    int a;
+    while (i<j){
+        D[a]=P[i];
+        i++;
+        a++;
+    }
+}
+
+void sortByDate(Tache *t[], int size){
+    if (size==1) return;
+    Tache **D, **F;
+    D=(Tache **)malloc((size/2)*sizeof(Tache *));
+    F=(Tache **)malloc((size/2)*sizeof(Tache *));
+    if (D==NULL || F==NULL) {
+        printf("Erreur: problème malloc 'sortByDate'\n");
+        exit(1);
+    }
+    cut(t, 0, size/2, D);
+    cut(t, size/2, size, F);
+    sortByDate(D, size/2);
+    sortByDate(F, size-size/2);
+    fusion(D, size/2, F, size-size/2, t);
+    free(D);
+    free(F);
+}

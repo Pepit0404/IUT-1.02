@@ -51,14 +51,14 @@ typedef struct {
 typedef struct maillon3{
     Tache tache;
     struct maillon3 *suiv;
-}Maillon3;
+} Maillon3;
 
 typedef struct{
     Maillon3 *t;
     Maillon3 *q;
-}File;
+} File;
 
-ListeDevis enfile(ListeDevis l, Devis devis);
+ListeDevis enliste(ListeDevis l, Devis devis);
 int newOffre(Offre *tab[], int size, int *tMax, char *travaux);
 Devis Lire1Devis(FILE *flot);
 void afficher1Devis(Devis d);
@@ -67,6 +67,9 @@ int readOffre(Offre *of[], int size, int *max, char *fileName);
 void sortByCost(Offre *of[], int size);
 void afficherTout(Offre **o, int nb);
 
+/**
+ * Partie 3
+*/
 Tache ** chargerTache(Offre *o[], int size);
 int ChargementTache(Tache *tabTache[], Offre **tabTravaux, int tLogO);
 Liste enlisteTache(Liste l, char successeur[]);
