@@ -12,8 +12,9 @@
 int main(){
     int choix, error, tSize=0, tMax=5;
     int ttSize;
-    bool charger=False, mini=False, run=True;
+    bool charger=False, mini=False, simu=False, run=True;
     Offre **tOffre;
+    Tache **tTache;
     tOffre=(Offre **)malloc(5*sizeof(Offre *));
     if(tOffre==NULL){printf("PB de malloc pour offre !\n");exit(1);}
     while (run==True){
@@ -23,8 +24,15 @@ int main(){
             printf("\t2. Afficher les devis\n");
             printf("\t3. Choisir les devis\n");
             printf("\t4. Charger l'ordre\n");
-            printf("\t5. fin\n");
+            if (mini==True){
+                printf("\t5. Simuler\n");
+                if (simu==True){
+                    printf("\t6. Afficher le temps de réalisation du projet\n");
+                    printf("\t7. Lister les taches restante un jour j\n");
+                }
+            }
         }
+        printf("\t0. fin\n");
         error=scanf("%d%*c", &choix);
         if (error==0){
             printf("Attention réponse non conforme\n");
@@ -48,16 +56,32 @@ int main(){
                 sortByCost(tOffre, tSize);
                 printf("Devis choisis avec succés\n");
                 afficherTout(tOffre, tSize);
-                mini=True;
             }
             else if (choix==4){
-                Tache **tTache;
                 tTache=(Tache **)malloc(tSize*sizeof(Tache *));
                 if(tTache==NULL){printf("PB de malloc pour tache !\n");exit(1);}
                 ttSize=ChargementTache(tTache, tOffre, tSize);
                 printf("\nChargement reussi\n");
+                mini=True;
             }
-            else if (choix==5){
+            else if (mini==True){
+                if (choix==5){
+                    Realisation(tTache, ttSize);
+                    simu=True;
+                }
+                else if (simu==True){
+                    if (choix==6){
+                        displayTime(tTache, ttSize);
+                    }
+                    else if (choix==7){
+                        int j;
+                        printf("Quel jours voulez-vous vérifier?\n");
+                        scanf("%d", &j);
+                        jour(tTache, ttSize, j);
+                    }
+                }
+            }
+            else if (choix==0){
                 run=False;
             }
         }
