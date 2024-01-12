@@ -55,7 +55,7 @@ void sortByCost(Offre *of[], int size);
 void afficherTout(Offre **o, int nb);
 
 Tache ** chargerTache(Offre *o[], int size);
-int ChargementTache(Tache *tabTache[], int tMax, Offre **tabTravaux, int tLogO);
+int ChargementTache(Tache *tabTache[], Offre **tabTravaux, int tLogO);
 Liste enlisteTache(Liste l, char successeur[]);
 Liste EnTeteTache(Liste l, char successeur[]);
 int rechercheTache(Tache *t[], int size, char successeur[]);

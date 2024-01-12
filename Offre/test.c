@@ -18,10 +18,10 @@ int main(void){
     sortByCost(o, size);
     afficherTout(o, size);
     Tache **t;
-    t=(Tache **)malloc(5*sizeof(Tache *));
+    t=(Tache **)malloc(size*sizeof(Tache *));
     if(t==NULL){printf("PB de malloc pour tache !\n");exit(1);}
     int s;
-    s=ChargementTache(t, 100, o, size);
+    s=ChargementTache(t, o, size);
     afficherTaches(t, s);
     printf("\n");
     return 0;

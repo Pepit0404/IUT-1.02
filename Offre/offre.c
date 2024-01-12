@@ -93,31 +93,6 @@ ListeDevis delTete(ListeDevis l){
     return l;
 }
 
-/**
-*\brief supprime le devis d'une certaine entreprise dans une liste
-*\param [ in ] l la liste de devis
-*\param start liste auxiliaire crée pour supprimer le devis
-*\param entreprise nom de l'entreprise dont on veut supprimer le devis
-*\return une liste de devis mis à jour sans le devis qu'on voulait enlever
-*/
-/*
-Liste deliste(Liste l, char *entreprise){
-    Liste start=l;
-    if (l==NULL){
-        printf("Erreur: impossible de delister une liste vide\n");
-        return l;
-    }
-    if (strcmp((start->devis).entreprise, entreprise)==0)
-        return delTete(l);
-    while (strcmp(((l->suiv)->devis).entreprise, entreprise)==0){
-        if (l->suiv==NULL){
-            printf("Erreur: entreprise non présente dans les donnée\n");
-            return start;
-        }
-        l=l->suiv;
-    }
-}
-*/
 
 /**
 *\brief ajoute dans le tableau une tache qui n'y était pas
@@ -369,7 +344,7 @@ void sortByCost(Offre *of[], int size){
 /**
 *\brief vérifie si une liste est vide ou non
 *\param [ in ] l liste qu'on inspecte
-*\return
+*\return o si la liste est vide et 1 si elle ne l'est pas.
 */
 bool ListeVide(Liste l)
 {
@@ -378,10 +353,8 @@ bool ListeVide(Liste l)
 }
 
 /**
-*\brief 
-*\param
-*\param
-*\return
+*\brief affiche une liste des noms de tous les successeurs d'une tache
+*\param [ in ] l liste des succeseurs
 */
 void afficherSuccesseur(Liste l)
 {
@@ -394,10 +367,10 @@ void afficherSuccesseur(Liste l)
 }
 
 /**
-*\brief 
-*\param
-*\param
-*\return
+*\brief affiche les informations de toutes les taches 
+*\param [ in , out ] t tableau de toutes les taches
+*\param  [ in ] size taille logique du tableau t
+*\param a compteur d'une boucle
 */
 void afficherTaches(Tache *t[], int size)
 {
@@ -413,10 +386,12 @@ void afficherTaches(Tache *t[], int size)
 }
 
 /**
-*\brief 
-*\param
-*\param
-*\return
+*\brief recherche une tache dans le tableau
+*\param [ in ] t tableau des taches
+*\param [ in ] size taille logique du tableau t
+*\param [ in ] successeur tache chercher
+*\param [ out ] a compteur d'une boucle
+*\return la position de la tache ou -1 si elle n'existe pas
 */
 //-1 si pas trouvé
 int rechercheTache(Tache *t[], int size, char successeur[])
@@ -429,10 +404,11 @@ int rechercheTache(Tache *t[], int size, char successeur[])
 }
 
 /**
-*\brief 
-*\param
-*\param
-*\return
+*\brief ajoute un nouveau successeur au début de la liste des successeurs
+*\param [ in , out ] l liste des successeurs
+*\param [ in ] successeur tache que l'on veut ajouter au début de la liste
+*\param new maillon dans lequel on met le nouveau successeur
+*\return la liste des successeur mis à jour
 */
 Liste EnTeteTache(Liste l, char successeur[])
 {
@@ -449,10 +425,10 @@ Liste EnTeteTache(Liste l, char successeur[])
 }
 
 /**
-*\brief 
-*\param
-*\param
-*\return
+*\brief place dans la liste des successeur une nouvelle tache
+*\param [ in , out] l liste des successeur
+*\param [ in , out] successeur la tache que l'on souhaite ajouter à la liste
+*\return la liste mis à jour
 */
 Liste enlisteTache(Liste l, char successeur[])
 {
@@ -464,12 +440,18 @@ Liste enlisteTache(Liste l, char successeur[])
 }
 
 /**
-*\brief 
-*\param
-*\param
+*\brief charge dans le tableau tabTache depuis le tableau des offres, toutes les meilleurs offres
+*\param [ in , out ] tabTache tableau des taches à faire
+*\param [ in ] o tableau de toutes les offres
+*\param [ in , out ] size taille logique du tableau tabTache
+*\param flot entrée vers le fichier des prédecesseurs et successeurs
+*\param pos indice de position de tache 1 puis de tache 2
+*\param [ out ] tache1 prédécesseur de la tache 2
+*\param [ out ] tache2 successeur de la tache1
+*\param i comteur pour une boucle
 *\return
 */
-int ChargementTache(Tache *tabTache[], int tMax, Offre **o, int size){
+int ChargementTache(Tache *tabTache[], Offre **o, int size){
     FILE *flot;
     int pos=0;
     char tache1[20], tache2[20];
@@ -481,7 +463,7 @@ int ChargementTache(Tache *tabTache[], int tMax, Offre **o, int size){
     for (int i=0;i<size;i++){
         tabTache[i]=(Tache *)malloc(sizeof(Tache));
         if (tabTache[i] == NULL) {
-                printf("Erreur : allocation mémoire pour o[%d]\n", size);
+                printf("Erreur : allocation mémoire pour tabTache[%d]\n", size);
                 return -1;
         }
         strcpy(tabTache[i]->tache,o[i]->travaux);
