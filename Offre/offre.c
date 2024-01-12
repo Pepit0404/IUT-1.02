@@ -338,10 +338,12 @@ int readOffre(Offre *of[], int size, int *max, char *fileName){
 */
 
 /**
-*\brief 
-*\param
-*\param
-*\return
+*\brief garde le meilleur devis, c'est à dire le moins cher et si 2 ont le même prix alors c'est le capital le plus haut qui est gardé
+*\param [ in ] of tableau de toutes les taches
+*\param [ in ] size taille logique du tableau of
+*\param [ in , out ] save devis dans lequel on sauvegarde le meilleur
+*\param [ out ] l nouvelle liste de devis dans laquelle on met le meilleur devis
+*\param i compteur dans la boucle
 */
 //Fonction qui garde les moins chère
 void sortByCost(Offre *of[], int size){
@@ -363,10 +365,6 @@ void sortByCost(Offre *of[], int size){
     }
 }
 
-
-void affiche(void){
-    printf("Coucou je suis la\n");
-}
 
 /*
 *       PARTIE 3
