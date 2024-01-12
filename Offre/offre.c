@@ -247,11 +247,6 @@ int rechercheTravaux(Offre **o, char travaux[], int nb, int *trouve)
             *trouve=1;
             return i;
         }
-        if(strcmp(travaux, o[i]->travaux)<0)
-        {
-            *trouve=0;
-            return i;
-        }
     }
     *trouve=0;
     return i;
@@ -279,7 +274,7 @@ void afficher1Travaux(Offre **o, char travaux[], int nb)
         return;
     }
     longueur=longListe(l);
-    printf("\n%s :\n", travaux);
+    printf("%s :\n", travaux);
     for(int a=0; a<longueur; a++){
         printf("\n");
         afficher1Devis(l->devis);
@@ -297,6 +292,7 @@ void afficher1Travaux(Offre **o, char travaux[], int nb)
 void afficherTout(Offre **o, int nb)
 {
     int i;
+    
     for(i=0; i<=nb-1; i++){
         afficher1Travaux(o, o[i]->travaux, nb);
         printf("\n-------------------------------------------------------------------------------------------------------------\n");
@@ -371,9 +367,8 @@ void sortByCost(Offre *of[], int size){
 */
 
 /**
-*\brief 
-*\param
-*\param
+*\brief vérifie si une liste est vide ou non
+*\param [ in ] l liste qu'on inspecte
 *\return
 */
 bool ListeVide(Liste l)
@@ -411,7 +406,7 @@ void afficherTaches(Tache *t[], int size)
     {
         printf("\n");
         printf("nom : %s      duree : %d      nbPred : %d\n",t[a]->tache, t[a]->duree, t[a]->nbPred);
-        printf("Noms des successeur :" );
+        printf("Noms des successeur : " );
         afficherSuccesseur(t[a]->succ);
         printf("\n");
     }
@@ -464,9 +459,8 @@ Liste enlisteTache(Liste l, char successeur[])
     if(l==NULL)
         return EnTeteTache(l, successeur);
     if(strcmp(l->nom , successeur)!=0)
-        return EnTeteTache(l, successeur);
-    l->suiv=enlisteTache(l->suiv, successeur);
-    return l;
+         return EnTeteTache(l, successeur);
+    return l->suiv=enlisteTache(l->suiv, successeur); 
 }
 
 /**
@@ -475,7 +469,7 @@ Liste enlisteTache(Liste l, char successeur[])
 *\param
 *\return
 */
-int fChargementTache(Tache *tabTache[], int tMax, Offre **tabTravaux, int tLogO){
+int ChargementTache(Tache *tabTache[], int tMax, Offre **o, int size){
     FILE *flot;
     int pos=0;
     char tache1[20], tache2[20];
@@ -484,14 +478,14 @@ int fChargementTache(Tache *tabTache[], int tMax, Offre **tabTravaux, int tLogO)
         printf("Erreur\tImpossible d'ouvir 'precedents.txt'\n");
         return -1;
     }
-    for (int i=0;i<tLogO;i++){
+    for (int i=0;i<size;i++){
         tabTache[i]=(Tache *)malloc(sizeof(Tache));
         if (tabTache[i] == NULL) {
-                printf("Erreur: allocation mémoire pour tabTravaux[%d]\n", tLogO);
+                printf("Erreur : allocation mémoire pour o[%d]\n", size);
                 return -1;
         }
-        strcpy(tabTache[i]->tache,tabTravaux[i]->travaux);
-        tabTache[i]->duree=tabTravaux[i]->ldevis->devis.duree;
+        strcpy(tabTache[i]->tache,o[i]->travaux);
+        tabTache[i]->duree=o[i]->ldevis->devis.duree;
         tabTache[i]->nbPred = 0;
         tabTache[i]->succ=NULL;
         tabTache[i]->dateDebut=0;
@@ -499,28 +493,24 @@ int fChargementTache(Tache *tabTache[], int tMax, Offre **tabTravaux, int tLogO)
     }
     while (!feof(flot)){
         fscanf(flot, "%s %s", tache1,tache2);
-        pos=rechercheTache(tabTache,tLogO,tache1);
+        pos=rechercheTache(tabTache,size,tache1);
         if(pos==-1){
             printf ("Erreur: '%s' non existante\n", tache2);
             exit(1);
         }
         tabTache[pos]->succ=enlisteTache(tabTache[pos]->succ,tache2);
-        pos=rechercheTache(tabTache,tLogO,tache2);
+        pos=rechercheTache(tabTache,size,tache2);
         if(pos==-1){
             printf ("Erreur: '%s' non existante\n", tache2);
             exit(1);
         }
         tabTache[pos]->nbPred++;
-    }/*
-    for (int i=0;i<tLogO;i++){
-        printf("%s\n",tabTache[i]->tache);
-        printf("%d\n",tabTache[i]->nbPred);
-    }*/
-    return tLogO;
+    }
+    return size;
 }
 
 /*
-T   ache ** chargerTache(Offre *o[], int size){
+Tache ** chargerTache(Offre *o[], int size){
     Tache **t;
     t=(Tache **)malloc(size * sizeof(Tache *));
     if (t==NULL){printf("Vas te faire voir\n"); exit(1);}
