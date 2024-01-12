@@ -76,6 +76,4 @@ void afficherTaches(Tache *t[], int size);
 void afficherSuccesseur(Liste l);
 bool ListeVide(Liste l);
 
-File chargementFile(File f, Tache *t[], int size);
-File FileNouv(File f);
-void afficherFile(File f);
+void Realisation(Tache *t[], int size);

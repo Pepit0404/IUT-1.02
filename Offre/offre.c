@@ -20,11 +20,11 @@
 *\param [ in ] l la liste de devis
 *\return la longueur dela liste
 */
-int longListe(ListeDevis l)
+int longListeD(ListeDevis l)
 {
     if(l==NULL)
         return 0;
-    return longListe(l->suiv)+1;
+    return longListeD(l->suiv)+1;
 }
 
 /**
@@ -192,7 +192,7 @@ void afficher1Devis(Devis d)
 void afficherDevisEntreprise(ListeDevis l, char entreprise[])
 {
     int longueur;
-    longueur=longListe(l);
+    longueur=longListeD(l);
     for(int a=0; a<longueur; a++)
     {
         if(strcmp(entreprise, (l->devis).entreprise)==0)
@@ -249,7 +249,7 @@ void afficher1Travaux(Offre **o, char travaux[], int nb)
         printf("Ce type de travail n'existe pas !\n");
         return;
     }
-    longueur=longListe(l);
+    longueur=longListeD(l);
     printf("%s :\n", travaux);
     for(int a=0; a<longueur; a++){
         printf("\n");
@@ -345,22 +345,22 @@ void sortByCost(Offre *of[], int size){
 /**
 *\brief vérifie si une liste est vide ou non
 *\param [ in ] l liste qu'on inspecte
-*\return o si la liste est vide et 1 si elle ne l'est pas.
+*\return 1 si la liste est vide et 0 si elle ne l'est pas.
 */
 bool ListeVide(Liste l)
 {
-    if (l==NULL) return 0;
-    return 1;
+    if(l==NULL)
+        return True;
+    return False;
 }
-
 /**
 *\brief affiche une liste des noms de tous les successeurs d'une tache
 *\param [ in ] l liste des succeseurs
 */
 void afficherSuccesseur(Liste l)
 {
-    if (ListeVide(l)==0) printf("Aucune");
-    else while(ListeVide(l)==1)
+    if (ListeVide(l)==1) printf("Aucune");
+    else while(ListeVide(l)==0)
     {
         printf("%s\t",l->nom);
         l=l->suiv;
@@ -492,87 +492,29 @@ int ChargementTache(Tache *tabTache[], Offre **o, int size){
     return size;
 }
 
-/*
-Tache ** chargerTache(Offre *o[], int size){
-    Tache **t;
-    t=(Tache **)malloc(size * sizeof(Tache *));
-    if (t==NULL){printf("Vas te faire voir\n"); exit(1);}
-    for (int i=0; i<size-1; i++){
-        strcpy(t[i]->tache,o[i]->travaux);
-        t[i]->duree=(o[i]->ldevis->devis).duree;
-    }
-    char a[100], b[100];
-    FILE *file;
-    file = fopen("toto.txt", "r");
-    int place;
-    if (file==NULL){
-        printf("baise ta mère\n");
-        exit(1);
-    }
-    fscanf(file, "%s%*c", a);
-    printf("connard\n");
-    while (feof(file)==0){
-        fscanf(file, "%s", b);
-        place=rechercheTache(t, size, b);
-        if (place!=-1){
-            t[place]->succ=enlisteTache(t[place]->succ, b);
-        }
-    }
-    fclose(file);
-    return t;
-}
-
-
-
-
-Tache ** chargerTache(Offre *o[], int size)
-{
-    FILE *file = fopen("toto.txt", "r");
-    if(file==NULL)
-    {
-        printf("Erreur: ouverture de precedent.txt\n");
-        exit(1);
-    }
-    int a, pos;
-    Tache **t;
-    t=(Tache **)malloc(size*sizeof(Tache *));
-    if(t==NULL){printf("Erreur: malloc chargerTache\n");exit(1);}
-    for(a=0;a<size-1;a++)
-    {
-        strcpy(t[a]->tache , o[a]->travaux);
-        t[a]->duree=(o[a]->ldevis->devis).duree;
-    }
-
-
-    char predecesseur[100], successeur[100];
-    int toto;
-    fscanf(file, "%d", &toto);
-    printf("debug->%s\n", "Connard !!!!!!!!!!!!!!!!");
-    printf("toto\n");
-    while(!feof(file))
-    {   
-        
-        fscanf(file,"%*c%s",successeur);
-        pos=rechercheTache(t, size, successeur);
-        if(pos!=-1)
-            t[pos]->nbPred=t[pos]->nbPred+1;
-        enlisteTache(t[pos]->succ, successeur);
-        fscanf(file,"%s",predecesseur);
-    }
-    fclose(file);
-    return t;
-}
-*/
 
 /*
         Partie 4
 */
+
+int longListeL(Liste l)
+{
+    if(l==NULL)
+        return 0;
+    return longListeL(l->suiv)+1;
+}
 
 File FileNouv(File f)
 {   
     f.t=NULL;
     f.q=NULL;
     return f;
+}
+
+Liste ListeNouv(Liste l)
+{
+    l->suiv=NULL;
+    return l;
 }
 
 File ajouterQueue(File f, Tache *t)
@@ -598,9 +540,68 @@ File ajouterQueue(File f, Tache *t)
     return f;
 }
 
+bool FileVide(File f)
+{
+    if(f.t==NULL)
+        return True;
+    return False;
+}
+
+
+ 
+char* teteL(Liste l)
+{
+    if(ListeVide(l))
+    {
+        printf("La liste est vide\n");
+        exit(1);
+    }
+    return l->nom;
+}
+
+char *teteFile(File f)
+{
+    if(FileVide(f))
+    {
+        printf("La file est vide\n");
+        exit(1);
+    }
+    return (f.t->tache).tache;
+}
+
+void afficherFile(File f)
+{
+    while(f.t!=NULL)
+    {
+        printf("%s\n", (f.t->tache).tache);
+        printf("Date : %d\n\n", (f.t->tache).dateDebut);
+        f.t=f.t->suiv;
+    }
+}
+
+File supprimerTete(File f)
+{
+    Maillon3 *m;
+    m=(Maillon3 *)malloc(sizeof(Maillon3));
+    if(m==NULL)
+    {
+        printf("Erreur de malloc du maillon3 m !\n");
+        exit(1);
+    }
+    if(f.t==NULL)
+    {
+        printf("Liste vide !\n");
+        exit(1);
+    }
+    m=f.t;
+    f.t=f.t->suiv;
+    free(m);
+    return f;
+}
+/* 
 File chargementFile(File f, Tache *t[], int size)
 {
-    int a, i=0;
+    int a ;
     for(a=0; a<size; a++)
     {
         if(t[a]->nbPred==0)
@@ -611,14 +612,69 @@ File chargementFile(File f, Tache *t[], int size)
     return f;
 }
 
-void afficherFile(File f)
+File Realisation(File f, Tache *t[], int *size)
 {
-    while(1)
+    int pos, rep, a;
+    pos=rechercheTache(t, *size, (f.t->tache).tache);
+    f=supprimerTete(f);
+    while(t[pos]->succ!=NULL)
     {
-        printf("%s\n", (f.t->tache).tache);
-        printf("Date : %d\n\n", (f.t->tache).dateDebut);
-        if(f.t->suiv==NULL)
-            break;
-        f.t=f.t->suiv;
+        rep=rechercheTache(t, *size, t[pos]->succ->nom);
+        t[rep]->nbPred=t[rep]->nbPred-1;
+        t[pos]->succ=t[pos]->succ->suiv;
+    }
+    for(a=pos; a<*size; a++)
+        t[a]=t[a+1];
+    *size=*size-1;
+    return f;
+}
+*/
+
+void Realisation(Tache *t[], int size)
+{
+    File f;
+    Liste l ;
+    char ti[30];
+    int pos;
+    f=FileNouv(f);
+    for(int a=0;a<size;a++)
+        if(t[a]->nbPred ==0)
+            f=ajouterQueue(f,t[a]);
+    while(FileVide(f)==0)
+    {
+        teteFile(f);
+        strcpy(ti,teteFile(f));
+        f=supprimerTete(f);
+        pos=rechercheTache(t, size, ti);
+        if(pos==-1)
+        {
+            printf("La tache n'existe pas\n");
+            exit(1);
+        }
+        l=t[pos]->succ;
+        for(int j=0;j<longListeL(l);j++)
+        {
+            for(int i =0; i<size; i++)
+            {
+                if(i!=pos)
+                {
+                    if(strcmp(teteL(l),t[i]->tache)==0)
+                    {
+                        t[i]->dateDebut=t[pos]->duree+t[i]->dateDebut+t[pos]->dateDebut;
+                        t[i]->nbPred-=1;
+                        if(t[i]->nbPred==0)
+                              f=ajouterQueue(f,t[i]);
+                    }
+                    if(l->suiv!=NULL)
+                        l=l->suiv;
+                }
+            }
+        }
+        t[pos]->traite=True;
+    }
+    for(int c=0; c<size; c++)
+    {
+        printf("Tache : %s      Date début : %d\n",t[c]->tache,t[c]->dateDebut);
+        printf("Traité : %d\n",t[c]->traite);
     }
 }

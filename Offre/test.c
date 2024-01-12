@@ -21,13 +21,10 @@ int main(void){
     Tache **t;
     t=(Tache **)malloc(size*sizeof(Tache *));
     if(t==NULL){printf("PB de malloc pour tache !\n");exit(1);}
-    int s;
-    s=ChargementTache(t, o, size);
-    afficherTaches(t, s);
+    size=ChargementTache(t, o, size);
+    afficherTaches(t, size);
     printf("\n");
-    File f;
-    f=FileNouv(f);
-    f=chargementFile(f, t, size);
-    afficherFile(f);
+    Realisation(t, size);
+    Realisation(t, size);
     return 0;
 }
