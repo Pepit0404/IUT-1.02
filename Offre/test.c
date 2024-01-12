@@ -26,5 +26,8 @@ int main(void){
     afficherTaches(t, size);
     printf("\n");
     Realisation(t, size);
+    //afficherTachesPlus(t, size);
+    displayTime(t,size);
+    jour(t, size, 60);
     return 0;
 }

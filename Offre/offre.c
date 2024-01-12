@@ -386,6 +386,19 @@ void afficherTaches(Tache *t[], int size)
     }
 }
 
+void afficherTachesPlus(Tache *t[], int size)
+{
+    int a;
+    for(a=0; a<size; a++)
+    {
+        printf("\n");
+        printf("nom : %s      duree : %d    debut : %d      nbPred : %d\n",t[a]->tache, t[a]->duree, t[a]->dateDebut, t[a]->nbPred);
+        printf("Noms des successeur : " );
+        afficherSuccesseur(t[a]->succ);
+        printf("\n");
+    }
+}
+
 /**
 *\brief recherche une tache dans le tableau
 *\param [ in ] t tableau des taches
@@ -631,6 +644,66 @@ File Realisation(File f, Tache *t[], int *size)
 }
 */
 
+void fusion(Tache *P[], int p, Tache *D[], int d, Tache *F[]){
+    int i=0, j=0;
+    while (p>i && d>j){
+        if (P[i]->dateDebut == D[j]->dateDebut){
+            if (P[i]->duree < D[i]->duree){
+                F[i+j]=P[i];
+                i++;
+            }
+            else {
+                F[i+j]=D[j];
+                j++;
+            }
+        }
+        
+        else if(P[i]->dateDebut < D[j]->dateDebut){
+            F[i+j]=P[i];
+            i++;
+        }
+        else {
+            F[i+j]=D[j];
+            j++;
+        }
+    }
+    while (i<p){
+        F[i+j]=P[i];
+        i++;
+    }
+    while (j<d){
+        F[i+j]=D[j];
+        j++;
+    }
+}
+
+void cut(Tache *P[], int i, int j, Tache *D[]){
+    int a=0;
+    while (i<j){
+        D[a]=P[i];
+        i++;
+        a++;
+    }
+}
+
+void sortByDate(Tache *t[], int size){
+    if (size==1) return;
+    Tache **D, **F;
+    D=(Tache **)malloc((size/2)*sizeof(Tache *));
+    F=(Tache **)malloc((size/2)*sizeof(Tache *));
+    if (D==NULL || F==NULL) {
+        printf("Erreur: problème malloc 'sortByDate'\n");
+        exit(1);
+    }
+    cut(t, 0, size/2, D);
+    cut(t, size/2, size, F);
+    sortByDate(D, size/2);
+    sortByDate(F, size-size/2);
+    fusion(D, size/2, F, size-size/2, t);
+    free(D);
+    free(F);
+}
+
 void Realisation(Tache *t[], int size)
 {
     File f;
@@ -676,60 +749,26 @@ void Realisation(Tache *t[], int size)
         }
         t[pos]->traite=True;
     }
+    sortByDate(t, size);
     for(int c=0; c<size; c++)
     {
         printf("Tache : %s      Date début : %d\n",t[c]->tache,t[c]->dateDebut);
         printf("Traité : %d\n",t[c]->traite);
         printf("\n-------------------------------------------------------------------\n");
     }
+    
 }
 
+void displayTime(Tache *t[], int size){
+    printf("\nLe projet a pour duree: %d jours\n", t[size-1]->dateDebut+t[size-1]->duree);
+}
 
-void fusion(Tache *P[], int p, Tache *D[], int d, Tache *F[]){
-    int i=0, j=0;
-    while (p>i && d>j){
-        if(P[i]->dateDebut < D[j]->dateDebut){
-            F[i+j]=P[i];
-            i++;
+void jour(Tache *t[],int size,int jour){
+    printf("Il reste : \n");
+    for(int i=0; i<size; i++){
+        if(jour<t[i]->dateDebut + t[i]->duree){
+            printf("\t-%s\n", t[i]->tache);
         }
-        else {
-            F[i+j]=D[j];
-            j++;
-        }
     }
-    while (i<p){
-        F[i+j]=P[i];
-        i++;
-    }
-    while (j<d){
-        F[i+j]=D[j];
-        j++;
-    }
-}
-
-void cut(Tache *P[], int i, int j, Tache *D[]){
-    int a;
-    while (i<j){
-        D[a]=P[i];
-        i++;
-        a++;
-    }
-}
-
-void sortByDate(Tache *t[], int size){
-    if (size==1) return;
-    Tache **D, **F;
-    D=(Tache **)malloc((size/2)*sizeof(Tache *));
-    F=(Tache **)malloc((size/2)*sizeof(Tache *));
-    if (D==NULL || F==NULL) {
-        printf("Erreur: problème malloc 'sortByDate'\n");
-        exit(1);
-    }
-    cut(t, 0, size/2, D);
-    cut(t, size/2, size, F);
-    sortByDate(D, size/2);
-    sortByDate(F, size-size/2);
-    fusion(D, size/2, F, size-size/2, t);
-    free(D);
-    free(F);
+    printf(" à réaliser au jour %d\n",jour);
 }
