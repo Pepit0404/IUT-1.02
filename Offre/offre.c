@@ -419,16 +419,13 @@ void afficherTaches(Tache *t[], int size)
     }
 }
 
-<<<<<<< HEAD
 /**
 *\brief 
 *\param
 *\param
 *\return
 */
-=======
 //-1 si pas trouvé
->>>>>>> 6d31993 (liberé!)
 int rechercheTache(Tache *t[], int size, char successeur[])
 {
     int a;
@@ -474,14 +471,12 @@ Liste enlisteTache(Liste l, char successeur[])
     return l;
 }
 
-<<<<<<< HEAD
 /**
 *\brief 
 *\param
 *\param
 *\return
 */
-=======
 int fChargementTache(Tache *tabTache[], int tMax, Offre **tabTravaux, int tLogO){
     FILE *flot;
     int pos=0;
@@ -559,7 +554,6 @@ T   ache ** chargerTache(Offre *o[], int size){
 
 
 
->>>>>>> 6d31993 (liberé!)
 Tache ** chargerTache(Offre *o[], int size)
 {
     FILE *file = fopen("toto.txt", "r");
