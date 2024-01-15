@@ -94,9 +94,10 @@ int main(){
                     }
                 }
             }
-            else if (choix==0){
-                run=False;
-            }
+            
+        }
+        else if (choix==0){
+            run=False;
         }
     }
     return 0;

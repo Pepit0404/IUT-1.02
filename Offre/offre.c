@@ -737,7 +737,7 @@ void Realisation(Tache *t[], int size)
         for(int j=0; j<tour; j++)
         {
             char tete[20];
-            strcpy(tete,teteL(l));
+            strcpy(tete,teteListe(l));
             for(int i=0; i<size; i++)
             {
                 if(i!=pos)
