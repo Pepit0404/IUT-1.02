@@ -96,7 +96,7 @@ int main(){
             }
             
         }
-        else if (choix==0){
+        if (choix==0){
             run=False;
         }
     }
